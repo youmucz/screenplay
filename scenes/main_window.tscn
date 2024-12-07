@@ -1,0 +1,106 @@
+[gd_scene load_steps=6 format=3 uid="uid://3goyqtx767ro"]
+
+[ext_resource type="Script" path="res://addons/screenplay/scripts/MainWindow.cs" id="1_aytf0"]
+[ext_resource type="PackedScene" uid="uid://c4u2k2ih5kcq4" path="res://addons/screenplay/scenes/page_block_scene.tscn" id="2_r2rfd"]
+[ext_resource type="Texture2D" uid="uid://bj563evda20sy" path="res://addons/screenplay/resources/icons/Interfaces/message-square.svg" id="3_r4xjg"]
+[ext_resource type="Texture2D" uid="uid://po85t1xx1gu0" path="res://addons/screenplay/resources/icons/Interfaces/clock.svg" id="4_3tggo"]
+[ext_resource type="Texture2D" uid="uid://625uhkngl70e" path="res://addons/screenplay/resources/icons/Interfaces/more-horizontal.svg" id="5_3tggo"]
+
+[node name="MainWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_aytf0")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+split_offset = -377
+
+[node name="LeftSidePanel" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="UserWindow" type="VBoxContainer" parent="MarginContainer/HSplitContainer/LeftSidePanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FileWindow" type="Tree" parent="MarginContainer/HSplitContainer/LeftSidePanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HelpWindow" type="VBoxContainer" parent="MarginContainer/HSplitContainer/LeftSidePanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+split_offset = -200
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Page" parent="MarginContainer/HSplitContainer/HSplitContainer/ScrollContainer" instance=ExtResource("2_r2rfd")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SettingWindow" type="VBoxContainer" parent="MarginContainer/HSplitContainer/HSplitContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="Toolbar" type="HBoxContainer" parent="MarginContainer/HSplitContainer/HSplitContainer/SettingWindow"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="Comments" type="TextureButton" parent="MarginContainer/HSplitContainer/HSplitContainer/SettingWindow/Toolbar"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture_normal = ExtResource("3_r4xjg")
+stretch_mode = 5
+
+[node name="Updates" type="TextureButton" parent="MarginContainer/HSplitContainer/HSplitContainer/SettingWindow/Toolbar"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture_normal = ExtResource("4_3tggo")
+stretch_mode = 5
+
+[node name="More" type="TextureButton" parent="MarginContainer/HSplitContainer/HSplitContainer/SettingWindow/Toolbar"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture_normal = ExtResource("5_3tggo")
+stretch_mode = 5
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/HSplitContainer/HSplitContainer/SettingWindow"]
+layout_mode = 2
+size_flags_vertical = 3

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4u2k2ih5kcq4"]
+
+[ext_resource type="Script" path="res://addons/screenplay/scripts/blocks/PageBlockScene.cs" id="1_n06t2"]
+[ext_resource type="PackedScene" uid="uid://dm1wrawpumwbj" path="res://addons/screenplay/scenes/text_block_scene.tscn" id="2_fox6a"]
+
+[node name="Page" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n06t2")
+_blockScenes = {
+0: ExtResource("2_fox6a")
+}
+
+[node name="BlockContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
