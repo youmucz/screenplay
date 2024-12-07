@@ -11,10 +11,12 @@ public partial class PageBlockScene : BlockScene
     private const int _maxBlocks = 20;
     
     private VBoxContainer _blockContainer;
+    private VBoxContainer _emptyContainer;
     private TextBlockScene _currentBlockScene;
     
     public override void _Ready()
     {
+        _emptyContainer = GetNode<VBoxContainer>("EmptyContainer");
         _blockContainer = GetNode<VBoxContainer>("BlockContainer");
     }
     
@@ -37,10 +39,22 @@ public partial class PageBlockScene : BlockScene
                     GetViewport().SetInputAsHandled();
                 }
             }
-            
         }
         
+        CheckBeginEdit();
+        
         base._Input(@event);
+    }
+    
+    /// <summary>
+    /// 空白页面提示面板显隐逻辑
+    /// </summary>
+    /// <param name="visible"></param>
+    private void CheckBeginEdit()
+    {
+        var visible = IsInstanceValid(_currentBlockScene);
+        _blockContainer.Visible = visible;
+        _emptyContainer.Visible = !visible;
     }
 
     private void AddBlock()
