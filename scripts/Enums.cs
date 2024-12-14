@@ -12,3 +12,10 @@ public enum Elements
     Transition,
     Parenthesis,
 }
+
+
+public struct PlaceholderText
+{
+    public const string Text = "Write something, or press '/' for commands...";
+}
+

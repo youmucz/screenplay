@@ -9,10 +9,21 @@ public partial class TextBlockScene : BlockScene
     public override void _Ready()
     {
         _textEdit = GetNode<TextEdit>("TextEdit");
-        _textEdit.FocusEntered += EmitSignalFocusEntered;
-        _textEdit.FocusExited += EmitSignalFocusExited;
+        _textEdit.FocusEntered += TextEditOnFocusEntered;
+        _textEdit.FocusExited += TextEditOnFocusExited;
+    }
+    private void TextEditOnFocusEntered()
+    {
+        _textEdit.PlaceholderText = PlaceholderText.Text;
+        // EmitSignalFocusEntered();
     }
     
+    private void TextEditOnFocusExited()
+    {
+        _textEdit.PlaceholderText = "";
+        // EmitSignalFocusExited();
+    }
+
     // public override void _Input(InputEvent @event)
     // {
     //     if (@event is InputEventKey keyEvent)
@@ -28,6 +39,12 @@ public partial class TextBlockScene : BlockScene
     //     
     //     base._Input(@event);
     // }
+    
+    public new bool HasFocus()
+    {
+        var res = base.HasFocus();
+        return _textEdit.HasFocus() || res;
+    }
 
     public override bool CanDestroy()
     {
@@ -37,7 +54,6 @@ public partial class TextBlockScene : BlockScene
     public new void GrabFocus()
     {
        base.GrabFocus();
-       
        _textEdit.GrabFocus();
     }
 }
