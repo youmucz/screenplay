@@ -18,7 +18,7 @@ public partial class BlockScene : MarginContainer
     /// 重置父子关系树
     /// </summary>
     /// <param name="parent"></param>
-    public void SetParent(BlockScene parent)
+    public void IndentParent(BlockScene parent)
     {
         if (parent == Parent || parent is null) return;
         // 1.清理旧父节点关系
@@ -36,6 +36,20 @@ public partial class BlockScene : MarginContainer
         if (!parent.ChildrenBlocks.Contains(this)) parent.ChildrenBlocks.Add(this);
         // 5.进行缩进
         SetIndent("margin_left", parent.GetThemeConstant("margin_left"));
+    }
+    
+    /// <summary>
+    /// 顶格块,只改变margin
+    /// </summary>
+    /// <param name="parent"></param>
+    public void UnindentParent(BlockScene parent)
+    {
+        SetIndent("margin_left", parent.GetThemeConstant("margin_left"));
+        
+        foreach (var node in ChildrenBlocks)
+        {
+            node.UnindentParent(this);
+        }
     }
     
     public virtual bool CanDestroy() { return true; }

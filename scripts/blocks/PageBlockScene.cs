@@ -43,8 +43,8 @@ public partial class PageBlockScene : BlockScene
     {
         base._Input(@event);
         
-        if (!IsInstanceValid(Plugin.GetMainWindow()) || !Plugin.GetMainWindow().IsVisible())
-            return;
+        // if (!IsInstanceValid(Plugin.GetMainWindow()) || !Plugin.GetMainWindow().IsVisible())
+        //     return;
         
         switch (@event)
         {
@@ -60,13 +60,8 @@ public partial class PageBlockScene : BlockScene
                         break;
                     case Key.Backspace:
                     {
-                        if (!IsInstanceValid(CurrentBlockScene)) break;
-                        
-                        if (CurrentBlockScene.CanDestroy())
-                        {
-                            DelBlock();
+                        if (UnindentBlock())
                             GetViewport().SetInputAsHandled();
-                        }
                         break;
                     }
                     case Key.Up:
@@ -149,7 +144,67 @@ public partial class PageBlockScene : BlockScene
         }
         
         // 2.重置父子关系树
-        if (indentBlock != null) currentBlock.SetParent(indentBlock);
+        if (indentBlock != null) currentBlock.IndentParent(indentBlock);
+    }
+    
+    /// <summary>
+    /// 顶格块,重新构建父子关系树
+    /// 1.若当前节点无后排兄弟节点,则顶格一级,其子节点(以及子节点的子节点)跟着顶格一级
+    /// 2.否则删除该节点,复制其文本到前面的兄弟节点
+    /// </summary>
+    private bool UnindentBlock()
+    {
+        var currentBlock = CurrentBlockScene;
+        
+        GD.Print("Unindent Block currentBlock ", currentBlock);
+        
+        if (!IsInstanceValid(currentBlock)) return false;
+        
+        TextBlockScene indentBlock = null;
+        foreach (var node in _blockContainer.GetChildren())
+        {
+            var block = (TextBlockScene)node;
+            
+            // 只需要判断序号比自己小的即可
+            if (block.GetIndex() >= currentBlock.GetIndex()) continue;
+            
+            if (block.Parent.Uid == currentBlock.Parent.Uid)
+            {
+                indentBlock = block;
+            }
+        }
+
+        var frontBlock = _blockContainer.GetChildOrNull<TextBlockScene>(currentBlock.GetIndex() - 1);
+        var backBlock = _blockContainer.GetChildOrNull<TextBlockScene>(currentBlock.GetIndex() + 1);
+
+        if (frontBlock == currentBlock || backBlock == currentBlock)
+        {
+            DelBlock(currentBlock, null);
+            return true;
+        }
+        
+        if (IsInstanceValid(backBlock) && backBlock.Parent != currentBlock.Parent && currentBlock.CanDestroy())
+        {
+            GD.Print("Unindent Block backBlock ", backBlock);
+            currentBlock.Parent.ChildrenBlocks.Remove(currentBlock);
+            currentBlock.Parent = currentBlock.Parent.Parent ?? this;
+            currentBlock.Parent.ChildrenBlocks.Add(this);
+            currentBlock.UnindentParent(currentBlock.Parent);
+            return true;
+        }
+        
+        if (IsInstanceValid(frontBlock) && frontBlock.Parent == currentBlock.Parent && currentBlock.CanDestroy())
+        {
+            GD.Print("Unindent Block frontBlock ", frontBlock);
+            DelBlock(currentBlock, frontBlock);
+            return true;
+        }
+        
+        GD.Print("Unindent Block DelBlock ", frontBlock);
+        
+        DelBlock(currentBlock, frontBlock);
+
+        return false;
     }
     
     /// <summary>
@@ -196,7 +251,7 @@ public partial class PageBlockScene : BlockScene
         
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
         var newBlock = _blockScenes[Elements.Text].Instantiate<TextBlockScene>();
-        newBlock.SetParent(parent);
+        newBlock.IndentParent(parent);
         
         _blockContainer.AddChild(newBlock);
         _blockContainer.MoveChild(newBlock, toIndex);
@@ -208,18 +263,14 @@ public partial class PageBlockScene : BlockScene
     /// <summary>
     /// 删除块
     /// </summary>
-    private void DelBlock()
+    private void DelBlock(TextBlockScene currentBlockScene, TextBlockScene nextBlock)
     {
-        var currentBlockScene = CurrentBlockScene;
-        
-        if (currentBlockScene == null) return;
-        
-        var nextBlockIndex = currentBlockScene.GetIndex() - 1;
         _blockContainer.RemoveChild(currentBlockScene);
         currentBlockScene.QueueFree();
             
         // if index < 0 means that all block already been deleted.
-        CurrentBlockScene = _blockContainer.GetChildOrNull<TextBlockScene>(nextBlockIndex);
+        nextBlock?.SetText(currentBlockScene.GetRelicText());
+        CurrentBlockScene = nextBlock;
         
         CheckBeginEdit();
     }

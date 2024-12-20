@@ -11,7 +11,14 @@ public partial class TextBlockScene : BlockScene
         _textEdit = GetNode<TextEdit>("TextEdit");
         _textEdit.FocusEntered += TextEditOnFocusEntered;
         _textEdit.FocusExited += TextEditOnFocusExited;
+        _textEdit.TextChanged += TextEditOnTextChanged;
     }
+
+    private void TextEditOnTextChanged()
+    {
+        
+    }
+
     private void TextEditOnFocusEntered()
     {
         _textEdit.PlaceholderText = PlaceholderText.Text;
@@ -48,7 +55,21 @@ public partial class TextBlockScene : BlockScene
 
     public override bool CanDestroy()
     {
-        return _textEdit is { Text: "" };
+        return _textEdit.GetCaretColumn() == 0;
+    }
+    
+    /// <summary>
+    /// 遗留的文本
+    /// </summary>
+    /// <returns></returns>
+    public string GetRelicText()
+    {
+        return _textEdit.GetText();
+    }
+
+    public void SetText(string text)
+    {
+        _textEdit.Text += text;
     }
 
     public new void GrabFocus()
