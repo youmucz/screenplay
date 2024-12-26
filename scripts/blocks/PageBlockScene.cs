@@ -43,8 +43,8 @@ public partial class PageBlockScene : BlockScene
     {
         base._Input(@event);
         
-        // if (!IsInstanceValid(Plugin.GetMainWindow()) || !Plugin.GetMainWindow().IsVisible())
-        //     return;
+        if (!IsInstanceValid(Plugin.GetMainWindow()) || !Plugin.GetMainWindow().IsVisible())
+            return;
         
         switch (@event)
         {
@@ -156,23 +156,7 @@ public partial class PageBlockScene : BlockScene
     {
         var currentBlock = CurrentBlockScene;
         
-        GD.Print("Unindent Block currentBlock ", currentBlock);
-        
-        if (!IsInstanceValid(currentBlock)) return false;
-        
-        TextBlockScene indentBlock = null;
-        foreach (var node in _blockContainer.GetChildren())
-        {
-            var block = (TextBlockScene)node;
-            
-            // 只需要判断序号比自己小的即可
-            if (block.GetIndex() >= currentBlock.GetIndex()) continue;
-            
-            if (block.Parent.Uid == currentBlock.Parent.Uid)
-            {
-                indentBlock = block;
-            }
-        }
+        if (!IsInstanceValid(currentBlock) || !currentBlock.CanDestroy()) return false;
 
         var frontBlock = _blockContainer.GetChildOrNull<TextBlockScene>(currentBlock.GetIndex() - 1);
         var backBlock = _blockContainer.GetChildOrNull<TextBlockScene>(currentBlock.GetIndex() + 1);
@@ -182,28 +166,24 @@ public partial class PageBlockScene : BlockScene
             DelBlock(currentBlock, null);
             return true;
         }
-        
-        if (IsInstanceValid(backBlock) && backBlock.Parent != currentBlock.Parent && currentBlock.CanDestroy())
+
+        if (IsInstanceValid(backBlock) && backBlock.Parent.Uid == currentBlock.Parent.Uid)
         {
-            GD.Print("Unindent Block backBlock ", backBlock);
-            currentBlock.Parent.ChildrenBlocks.Remove(currentBlock);
-            currentBlock.Parent = currentBlock.Parent.Parent ?? this;
-            currentBlock.Parent.ChildrenBlocks.Add(this);
-            currentBlock.UnindentParent(currentBlock.Parent);
-            return true;
-        }
-        
-        if (IsInstanceValid(frontBlock) && frontBlock.Parent == currentBlock.Parent && currentBlock.CanDestroy())
-        {
-            GD.Print("Unindent Block frontBlock ", frontBlock);
             DelBlock(currentBlock, frontBlock);
             return true;
         }
         
-        GD.Print("Unindent Block DelBlock ", frontBlock);
+        if (currentBlock.Parent.Uid == this.Uid)
+        {
+            DelBlock(currentBlock, frontBlock);
+            return true;
+        }
         
-        DelBlock(currentBlock, frontBlock);
-
+        currentBlock.Parent.ChildrenBlocks.Remove(currentBlock);
+        currentBlock.Parent = currentBlock.Parent.Parent ?? this;
+        currentBlock.Parent.ChildrenBlocks.Add(this);
+        currentBlock.UnindentParent(currentBlock.Parent);
+        
         return false;
     }
     

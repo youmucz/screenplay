@@ -12,3 +12,4 @@ mod: 通过聚焦方式去获取当前block
 add: 方向键up/down切换聚焦block
 add: 回车键创建新的block，同时需要确定父子关系树
 add: tab键缩进block,修改父子关系树
+add: 支持删除block
