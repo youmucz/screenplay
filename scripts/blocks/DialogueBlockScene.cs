@@ -1,11 +1,12 @@
 using Godot;
-using System;
 
 namespace Screenplay.Blocks;
 
 [Tool]
-public partial class TextBlockScene : BlockScene
+public partial class DialogueBlockScene : BlockScene
 {
+    protected override BlockResource BlockResource { get; set; } = new DialogueBlockResource();
+    
     private TextEdit _textEdit;
     
     public override void _Ready()

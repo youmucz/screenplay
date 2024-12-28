@@ -16,14 +16,27 @@ public partial class Plugin : EditorPlugin
     	EditorInterface.Singleton.GetEditorMainScreen().AddChild(_mainWindowInstance);
     	// Hide the main panel. Very much required.
     	_MakeVisible(false);
-    		
     }
     
     public override void _ExitTree()
     {
     	_mainWindowInstance?.QueueFree();
     }
-    
+
+    public override void _EnablePlugin()
+    {
+	    base._EnablePlugin();
+	    
+	    AddAutoloadSingleton("BlockFactory", "res://addons/screenplay/scripts/factory/BlockFactory.cs");
+    }
+
+    public override void _DisablePlugin()
+    {
+	    base._DisablePlugin();
+	    
+	    RemoveAutoloadSingleton("BlockFactory");
+    }
+
     public override bool _HasMainScreen()
     {
     	return true;

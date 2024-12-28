@@ -2,12 +2,16 @@ using Godot;
 using System;
 using Godot.Collections;
 
+namespace Screenplay.Blocks;
+
 
 [Tool]
 public partial class PageBlockScene : BlockScene
 {
     [Export] private Dictionary<Elements, PackedScene> _blockScenes = new();
-    
+
+    protected override BlockResource BlockResource { get; set; } = new PageBlockResource();
+
     private const int MaxBlocks = 20;
     
     private VBoxContainer _blockContainer;

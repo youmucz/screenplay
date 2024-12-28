@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqsjmxefwlhib"]
+
+[ext_resource type="Script" path="res://addons/screenplay/scripts/blocks/TextBlockScene.cs" id="1_j01d4"]
+
+[node name="Text" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -613.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_j01d4")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+context_menu_enabled = false
+wrap_mode = 1
+scroll_fit_content_height = true
+scroll_fit_content_width = true

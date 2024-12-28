@@ -13,3 +13,7 @@ add: 方向键up/down切换聚焦block
 add: 回车键创建新的block，同时需要确定父子关系树
 add: tab键缩进block,修改父子关系树
 add: 支持删除block
+
+## version 1.3.0
+add: 新增meta resource类用来存储数据,新增工厂类用来创建block
+mod: 去掉多余侧边栏，改为mianwindow创建page block

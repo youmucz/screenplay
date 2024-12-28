@@ -1,7 +1,8 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using Godot.Collections;
+
+namespace Screenplay.Blocks;
 
 
 [Tool]
@@ -10,6 +11,7 @@ public partial class BlockScene : MarginContainer
     public Guid Uid { get; set; } = Guid.NewGuid();
     
     public BlockScene Parent;
+    protected virtual BlockResource BlockResource { get; set; } = new ();
     public Array<BlockScene> ChildrenBlocks = new ();
     
     protected const int TabMargin = 16;
