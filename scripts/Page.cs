@@ -13,7 +13,9 @@ public partial class Page : BlockScene
     [Export] private Dictionary<Elements, PackedScene> _blockScenes;
     
     private const int MaxBlocks = 20;
-    
+
+    private Label _pageNumber;
+    private VBoxContainer _vboxContainer;
     private VBoxContainer _blockContainer;
     private VBoxContainer _emptyContainer;
     
@@ -39,8 +41,10 @@ public partial class Page : BlockScene
     
     public override void _Ready()
     {
-        _emptyContainer = GetNode<VBoxContainer>("EmptyContainer");
-        _blockContainer = GetNode<VBoxContainer>("BlockContainer");
+        _vboxContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer");
+        _emptyContainer = GetNode<VBoxContainer>("BlockMarginContainer/EmptyContainer");
+        _blockContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer/BlockContainer");
+        _pageNumber = GetNode<Label>("BlockMarginContainer/VBoxContainer/PageNumber");
     }
     
     public override void _Input(InputEvent @event)
@@ -97,6 +101,11 @@ public partial class Page : BlockScene
         // CheckBeginEdit();
     }
 
+    public void SetPageNumber(string pageNumber)
+    {
+        _pageNumber.Text = pageNumber;
+    }
+
     private TextBlockScene GetBlockByUid(Guid uid)
     {
         foreach (var node in _blockContainer.GetChildren())
@@ -116,7 +125,7 @@ public partial class Page : BlockScene
     {
         var visible = IsInstanceValid(CurrentBlockScene);
         
-        _blockContainer.Visible = visible;
+        _vboxContainer.Visible = visible;
         _emptyContainer.Visible = !visible;
         
         return visible;
@@ -249,7 +258,7 @@ public partial class Page : BlockScene
         
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
         var newBlock = _blockScenes[Elements.Text].Instantiate<TextBlockScene>();
-        newBlock.IndentParent(parent);
+        newBlock.IndentParent(parent, parent != this);
         
         _blockContainer.AddChild(newBlock);
         _blockContainer.MoveChild(newBlock, toIndex);

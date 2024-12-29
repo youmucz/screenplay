@@ -20,7 +20,8 @@ public partial class BlockScene : MarginContainer
     /// 重置父子关系树
     /// </summary>
     /// <param name="parent"></param>
-    public void IndentParent(BlockScene parent)
+    /// <param name="indent">是否进行缩进</param>
+    public void IndentParent(BlockScene parent, bool indent = true)
     {
         if (parent == Parent || !IsInstanceValid(parent)) return;
         // 1.清理旧父节点关系
@@ -37,7 +38,8 @@ public partial class BlockScene : MarginContainer
         // 4.创建关系树
         if (!parent.ChildrenBlocks.Contains(this)) parent.ChildrenBlocks.Add(this);
         // 5.进行缩进
-        SetIndent("margin_left", parent.GetThemeConstant("margin_left"));
+        if (indent)
+            SetIndent("margin_left", parent.GetThemeConstant("margin_left"));
     }
     
     /// <summary>
@@ -63,6 +65,7 @@ public partial class BlockScene : MarginContainer
     
     public virtual void SetIndent(StringName name, int value)
     {
+        GD.Print("In IndentParent: ", value);
         AddThemeConstantOverride(name, value + TabMargin);
     }
 }

@@ -20,8 +20,11 @@ public partial class MainWindow : Control
     public Page AddPage()
     {
         var page = _pageScene.Instantiate<Page>();
-        page.MainWindow = this;
+        
         _pageContainer.AddChild(page);
+        
+        page.MainWindow = this;
+        page.SetPageNumber((_pageContainer.GetChildCount()) + ".");
         
         return page;
     }
