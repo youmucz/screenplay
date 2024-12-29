@@ -22,7 +22,7 @@ public partial class BlockScene : MarginContainer
     /// <param name="parent"></param>
     public void IndentParent(BlockScene parent)
     {
-        if (parent == Parent || parent is null) return;
+        if (parent == Parent || !IsInstanceValid(parent)) return;
         // 1.清理旧父节点关系
         Parent?.ChildrenBlocks.Remove(this);
         // 2.替换子节点的父节点

@@ -4,6 +4,7 @@ using System;
 public enum Elements
 {
     Text,
+    Page,
     Scene,
     Action,
     Option,

@@ -6,29 +6,33 @@ using Screenplay.Blocks;
 [Tool]
 public partial class MainWindow : Control
 {
-    [Export] private Dictionary<StringName, PackedScene> _blocksScenes;
+    [Export] private PackedScene _pageScene;
     
     private VBoxContainer _pageContainer;
-    private Array<PageBlockScene> _pages;
     
     public override void _Ready()
     {
         _pageContainer = GetNode<VBoxContainer>("ScrollContainer/PageContainer");
-        CreatePages();
+        
+        AddPage();
     }
 
-    private void CreatePages()
+    public Page AddPage()
     {
-        var pageBlock = AddBlock<PageBlockScene>("Page");
+        var page = _pageScene.Instantiate<Page>();
+        page.MainWindow = this;
+        _pageContainer.AddChild(page);
         
-        _pageContainer.AddChild(pageBlock);
+        return page;
     }
 
-    public T AddBlock<T>(StringName type) where T : BlockScene
+    public void DelPage(Page page)
     {
-        var scene = _blocksScenes[type];
-        var block = scene.Instantiate<T>();
+        if (_pageContainer.GetChildCount() <= 1) return;
         
-        return block;
+        var nextPage = _pageContainer.GetChildOrNull<Page>(page.GetIndex() - 1);
+        nextPage.FocusBlock();
+        
+        _pageContainer.RemoveChild(page);
     }
 }

@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://fprihg4cwolc"]
+
+[ext_resource type="Script" path="res://addons/screenplay/scripts/Page.cs" id="1_nartp"]
+[ext_resource type="PackedScene" uid="uid://dm1wrawpumwbj" path="res://addons/screenplay/scenes/blocks/text_block_scene.tscn" id="2_l8kh6"]
+[ext_resource type="PackedScene" uid="uid://bqsjmxefwlhib" path="res://addons/screenplay/scenes/blocks/dialogue_block_scene.tscn" id="3_mdi1v"]
+[ext_resource type="Texture2D" uid="uid://ceclij1cynjtu" path="res://addons/screenplay/resources/icons/Interfaces/plus.svg" id="3_rxa02"]
+
+[node name="Page" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 648)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_bottom = 30
+script = ExtResource("1_nartp")
+_blockScenes = {
+0: ExtResource("2_l8kh6"),
+5: ExtResource("3_mdi1v")
+}
+
+[node name="EmptyContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="EmptyContainer"]
+layout_mode = 2
+text = "Press enter to continue with an empty page, or pick a template."
+
+[node name="Button" type="Button" parent="EmptyContainer"]
+layout_mode = 2
+text = "New template"
+icon = ExtResource("3_rxa02")
+alignment = 0
+
+[node name="BlockContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2

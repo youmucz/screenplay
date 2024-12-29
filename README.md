@@ -17,3 +17,4 @@ add: 支持删除block
 ## version 1.3.0
 add: 新增meta resource类用来存储数据,新增工厂类用来创建block
 mod: 去掉多余侧边栏，改为mianwindow创建page block
+add: 拆分window和page，支持添加/删除page

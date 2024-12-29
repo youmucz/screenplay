@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://3goyqtx767ro"]
+[gd_scene load_steps=6 format=3 uid="uid://3goyqtx767ro"]
 
 [ext_resource type="Script" path="res://addons/screenplay/scripts/MainWindow.cs" id="1_aytf0"]
-[ext_resource type="PackedScene" uid="uid://c4u2k2ih5kcq4" path="res://addons/screenplay/scenes/page_block_scene.tscn" id="2_r2rfd"]
-[ext_resource type="PackedScene" uid="uid://bqsjmxefwlhib" path="res://addons/screenplay/scenes/dialogue_block_scene.tscn" id="3_r4xjg"]
-[ext_resource type="PackedScene" uid="uid://dm1wrawpumwbj" path="res://addons/screenplay/scenes/text_block_scene.tscn" id="4_3tggo"]
+[ext_resource type="PackedScene" uid="uid://fprihg4cwolc" path="res://addons/screenplay/scenes/page.tscn" id="2_3tggo"]
+[ext_resource type="PackedScene" uid="uid://c4u2k2ih5kcq4" path="res://addons/screenplay/scenes/blocks/page_block_scene.tscn" id="2_r2rfd"]
+[ext_resource type="PackedScene" uid="uid://bqsjmxefwlhib" path="res://addons/screenplay/scenes/blocks/dialogue_block_scene.tscn" id="3_r4xjg"]
+[ext_resource type="PackedScene" uid="uid://dm1wrawpumwbj" path="res://addons/screenplay/scenes/blocks/text_block_scene.tscn" id="4_3tggo"]
 
 [node name="MainWindow" type="Control"]
 layout_mode = 3
@@ -15,6 +16,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_aytf0")
+_pageScene = ExtResource("2_3tggo")
 _blocksScenes = Dictionary[StringName, PackedScene]({
 &"Dialogue": ExtResource("3_r4xjg"),
 &"Page": ExtResource("2_r2rfd"),
@@ -31,16 +33,15 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(960, 648)
+custom_minimum_size = Vector2(0, 648)
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -480.0
-offset_right = 480.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 
 [node name="PageContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
