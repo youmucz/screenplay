@@ -39,7 +39,9 @@ public partial class BlockFactory : IFactory
     public override void _Ready()
     {
         base._Ready();
-       
+        
+        Engine.RegisterSingleton("BlockFactorySingleton", this);
+        
         Initialize();
     }
     
@@ -73,8 +75,6 @@ public partial class BlockFactory : IFactory
                 }
             }
         }
-        
-        Engine.RegisterSingleton("BlockFactorySingleton", this);
     }
     
     /// <summary>
