@@ -8,14 +8,19 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class BlockScene : MarginContainer
 {
-    public Guid Uid { get; set; } = Guid.NewGuid();
+    public Guid Uid { get; set; }
+    public BlockScene Parent { get; set; }
     
-    public BlockScene Parent;
-    protected virtual BlockResource BlockResource { get; set; } = new ();
+    public BlockResource BlockResource { get; set; } = new ();
     public Array<BlockScene> ChildrenBlocks = new ();
     
     protected const int TabMargin = 16;
-    
+
+    public override void _Ready()
+    {
+        Uid = Guid.NewGuid();
+    }
+
     /// <summary>
     /// 重置父子关系树
     /// </summary>
@@ -56,16 +61,34 @@ public partial class BlockScene : MarginContainer
         }
     }
     
+    /// <summary>
+    /// 删除block后要做的事
+    /// </summary>
+    /// <param name="block"></param>
+    public virtual void Destroy(BlockScene block)
+    {
+        
+    }
+    
     public virtual bool CanDestroy() { return true; }
 
     public virtual bool CanIndent()
     {
         return true;
     }
+
+    public virtual void SetFocus()
+    {
+        GrabFocus();
+    }
+
+    public virtual bool GetFocus()
+    {
+        return HasFocus();
+    }
     
     public virtual void SetIndent(StringName name, int value)
     {
-        GD.Print("In IndentParent: ", value);
         AddThemeConstantOverride(name, value + TabMargin);
     }
 }

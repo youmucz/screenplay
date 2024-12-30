@@ -23,20 +23,6 @@ public partial class Plugin : EditorPlugin
     	_mainWindowInstance?.QueueFree();
     }
 
-    public override void _EnablePlugin()
-    {
-	    base._EnablePlugin();
-	    
-	    AddAutoloadSingleton("BlockFactory", "res://addons/screenplay/scripts/factory/BlockFactory.cs");
-    }
-
-    public override void _DisablePlugin()
-    {
-	    base._DisablePlugin();
-	    
-	    RemoveAutoloadSingleton("BlockFactory");
-    }
-
     public override bool _HasMainScreen()
     {
     	return true;

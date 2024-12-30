@@ -16,15 +16,36 @@ public class BlockMetaAttribute : Attribute
 [Tool]
 public partial class BlockFactory : IFactory
 {
+    /// <summary>
+    /// 全局单例
+    /// </summary>
+    public static BlockFactory Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = (BlockFactory)Engine.GetSingleton("BlockFactorySingleton");
+            }
+            return _instance;
+        }
+    }
+    
+    private static BlockFactory _instance;
+    
+    private readonly System.Collections.Generic.Dictionary<StringName, Type> _blockResources = new ();
     private readonly System.Collections.Generic.Dictionary<StringName, Type> _blockScenes = new ();
 
     public override void _Ready()
     {
         base._Ready();
-        
+       
         Initialize();
     }
-
+    
+    /// <summary>
+    /// initialize class type
+    /// </summary>
     public override void Initialize()
     {
         // 获取程序集
@@ -35,32 +56,63 @@ public partial class BlockFactory : IFactory
         // 遍历所有类
         foreach (var type in types)
         {
-            if (!type.IsSubclassOf(typeof(BlockResource))) continue;
-            
             StringName blockType = null;
             
-            // 获取类中已经初始化的参数属性
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            
             foreach (var property in properties)
             {
-                if (property.Name == "Type") blockType = (StringName)property.GetValue(Activator.CreateInstance(type));
+                if (property.Name != "BlockResource") continue;
+                    
+                var resource = (BlockResource)property.GetValue(Activator.CreateInstance(type));
+
+                if (resource?.BlockType != null)
+                {
+                    _blockScenes.TryAdd(resource.BlockType, type);
+                    _blockResources.TryAdd(resource.BlockType, resource.GetType());
+                }
             }
-			
-            if (blockType == null) continue;
-			
-            // 存储block类型
-            _blockScenes.TryAdd(blockType, type);
         }
-    }
         
-    public BlockResource CreateBlock(StringName blockType, ScreenplayResource resource, Dictionary data)
+        Engine.RegisterSingleton("BlockFactorySingleton", this);
+    }
+    
+    /// <summary>
+    /// Using reflection to call generic methods to generate block resource.
+    /// </summary>
+    /// <param name="blockType"></param>
+    /// <param name="resource"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public BlockResource AddBlockResource(StringName blockType, ScreenplayResource resource, Dictionary data)
     {
-        if (_blockScenes.TryGetValue(blockType, out var type))
+        BlockResource blockResource = null;
+        
+        if (_blockResources.TryGetValue(blockType, out var type))
         {
-            var instance = (BlockResource)Activator.CreateInstance(type, new object[] { resource, data });
-            return instance;
+            blockResource = (BlockResource)Activator.CreateInstance(type, new object[] { resource, data });
         }
 		
-        return null;
+        return blockResource;
+    }
+    
+    /// <summary>
+    /// Using reflection to call generic methods to generate block scenes.
+    /// </summary>
+    /// <param name="blockType"></param>
+    /// <param name="blockScenes"></param>
+    /// <returns></returns>
+    public BlockScene AddBlockScene(Elements blockType, Dictionary<Elements, PackedScene> blockScenes)
+    {
+        BlockScene block = null;
+        
+        if (_blockScenes.TryGetValue(blockType.ToString(), out var type))
+        {
+            var blockScene = blockScenes[blockType];
+            block = (BlockScene)typeof(PackedScene).GetMethod("InstantiateOrNull")?.MakeGenericMethod(type)
+                .Invoke(blockScene, [PackedScene.GenEditState.Disabled]);
+        }
+		
+        return block;
     }
 }

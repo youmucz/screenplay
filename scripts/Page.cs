@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
+using Screenplay.Factory;
 
 namespace Screenplay.Blocks;
 
@@ -22,14 +23,16 @@ public partial class Page : BlockScene
     /// <summary>
     /// 当前聚焦的block,通过focus参数进行判断
     /// </summary>
-    private TextBlockScene CurrentBlockScene
+    private BlockScene CurrentBlockScene
     {
-        set => value?.GrabFocus();
+        set => value?.SetFocus();
         get
         {
+            if (!IsInstanceValid(_blockContainer)) return null;
+            
             foreach (var node in _blockContainer.GetChildren())
             {
-                if (node is TextBlockScene block && block.HasFocus())
+                if (node is TextBlockScene block && block.GetFocus())
                 {
                     return block;
                 }
@@ -106,11 +109,11 @@ public partial class Page : BlockScene
         _pageNumber.Text = pageNumber;
     }
 
-    private TextBlockScene GetBlockByUid(Guid uid)
+    private BlockScene GetBlockByUid(Guid uid)
     {
         foreach (var node in _blockContainer.GetChildren())
         {
-            var block = (TextBlockScene)node;
+            var block = (BlockScene)node;
 
             if (block.Uid == uid) return block;
         }
@@ -143,10 +146,10 @@ public partial class Page : BlockScene
         if (currentBlock == null) return;
         
         // 1.遍历查找最近的
-        TextBlockScene indentBlock = null;
+        BlockScene indentBlock = null;
         foreach (var node in _blockContainer.GetChildren())
         {
-            var block = (TextBlockScene)node;
+            var block = (BlockScene)node;
             
             // 只需要判断序号比自己小的即可
             if (block.GetIndex() >= currentBlock.GetIndex()) continue;
@@ -172,8 +175,8 @@ public partial class Page : BlockScene
         
         if (!IsInstanceValid(currentBlock) || !currentBlock.CanDestroy()) return false;
 
-        var frontBlock = _blockContainer.GetChildOrNull<TextBlockScene>(currentBlock.GetIndex() - 1);
-        var backBlock = _blockContainer.GetChildOrNull<TextBlockScene>(currentBlock.GetIndex() + 1);
+        var frontBlock = _blockContainer.GetChildOrNull<BlockScene>(currentBlock.GetIndex() - 1);
+        var backBlock = _blockContainer.GetChildOrNull<BlockScene>(currentBlock.GetIndex() + 1);
 
         if (frontBlock == currentBlock || backBlock == currentBlock)
         {
@@ -206,7 +209,7 @@ public partial class Page : BlockScene
     /// </summary>
     /// <param name="currentBlock"></param>
     /// <param name="parent"></param>
-    private void InsertBlock(TextBlockScene currentBlock, TextBlockScene parent)
+    private void InsertBlock(BlockScene currentBlock, BlockScene parent)
     {
         
     }
@@ -216,8 +219,8 @@ public partial class Page : BlockScene
     /// </summary>
     public void FocusBlock()
     {
-        var block = (TextBlockScene)_blockContainer.GetChild(_blockContainer.GetChildCount() - 1);
-        block.GrabFocus();
+        var block = (BlockScene)_blockContainer.GetChild(_blockContainer.GetChildCount() - 1);
+        block.SetFocus();
     }
     
     /// <summary>
@@ -233,8 +236,8 @@ public partial class Page : BlockScene
         
         block = keycode switch
         {
-            Key.Up => _blockContainer.GetChildOrNull<TextBlockScene>(index - 1),
-            Key.Down => _blockContainer.GetChildOrNull<TextBlockScene>(index + 1),
+            Key.Up => _blockContainer.GetChildOrNull<BlockScene>(index - 1),
+            Key.Down => _blockContainer.GetChildOrNull<BlockScene>(index + 1),
             _ => block
         };
         
@@ -257,12 +260,12 @@ public partial class Page : BlockScene
         parent ??= currentBlockScene?.Parent ?? this;
         
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
-        var newBlock = _blockScenes[Elements.Text].Instantiate<TextBlockScene>();
+        var newBlock = BlockFactory.Instance.AddBlockScene(Elements.Text, _blockScenes);
         newBlock.IndentParent(parent, parent != this);
         
         _blockContainer.AddChild(newBlock);
         _blockContainer.MoveChild(newBlock, toIndex);
-            
+        
         CurrentBlockScene = newBlock;
         CheckBeginEdit();
     }
@@ -270,13 +273,13 @@ public partial class Page : BlockScene
     /// <summary>
     /// 删除块
     /// </summary>
-    private void DelBlock(TextBlockScene currentBlockScene, TextBlockScene nextBlock)
+    private void DelBlock(BlockScene currentBlockScene, BlockScene nextBlock)
     {
         _blockContainer.RemoveChild(currentBlockScene);
         currentBlockScene.QueueFree();
             
         // if index < 0 means that all block already been deleted.
-        nextBlock?.SetText(currentBlockScene.GetRelicText());
+        nextBlock?.Destroy(currentBlockScene);
         CurrentBlockScene = nextBlock;
 
         if (!CheckBeginEdit())

@@ -6,5 +6,5 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class TextBlockResource : BlockResource
 {
-    [BlockMeta] public override StringName Type { get; set; } = Elements.Text.ToString();
+    [BlockMeta] public override StringName BlockType { get; set; } = Elements.Text.ToString();
 }

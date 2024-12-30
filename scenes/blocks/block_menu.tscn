@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://wcj1j8wgaqkf"]
+
+[ext_resource type="Texture2D" uid="uid://c603nn4pvdyoc" path="res://addons/screenplay/resources/icons/Interfaces/menu.svg" id="1_qlop6"]
+[ext_resource type="Script" uid="uid://dif6x8nlq7w5i" path="res://addons/screenplay/scripts/blocks/BlockMenu.cs" id="2_mn2sd"]
+[ext_resource type="Texture2D" uid="uid://b26841287c55p" path="res://addons/screenplay/resources/icons/Dialogue.svg" id="3_ee7ki"]
+[ext_resource type="Texture2D" uid="uid://bj563evda20sy" path="res://addons/screenplay/resources/icons/Interfaces/message-square.svg" id="4_fxbnh"]
+[ext_resource type="Texture2D" uid="uid://bat3pwlf0lubi" path="res://addons/screenplay/resources/icons/Editor/copy.svg" id="5_fxbnh"]
+[ext_resource type="Texture2D" uid="uid://dllpe2316rjao" path="res://addons/screenplay/resources/icons/Interfaces/trash.svg" id="6_g4v0a"]
+[ext_resource type="Texture2D" uid="uid://cy5ootptdodta" path="res://addons/screenplay/resources/icons/Arrows/refresh-cw.svg" id="7_vr0kb"]
+[ext_resource type="Texture2D" uid="uid://cb2nvx50c3wtv" path="res://addons/screenplay/resources/icons/Editor/type.svg" id="8_syxlv"]
+
+[node name="BlockMenu" type="TextureButton"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_qlop6")
+stretch_mode = 5
+script = ExtResource("2_mn2sd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -152.0
+offset_top = -103.0
+offset_right = -2.0
+offset_bottom = 103.0
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Search actions..."
+
+[node name="Comment" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Comment"
+icon = ExtResource("3_ee7ki")
+
+[node name="Suggest" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Suggest"
+icon = ExtResource("4_fxbnh")
+
+[node name="Duplicate" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Duplicate"
+icon = ExtResource("5_fxbnh")
+
+[node name="Delete" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Delete"
+icon = ExtResource("6_g4v0a")
+
+[node name="Turn Into" type="MenuButton" parent="VBoxContainer"]
+layout_mode = 2
+text = "Turn Into"
+icon = ExtResource("7_vr0kb")
+
+[node name="Color" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Color"
+icon = ExtResource("8_syxlv")

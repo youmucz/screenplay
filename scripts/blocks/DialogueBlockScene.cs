@@ -5,12 +5,14 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class DialogueBlockScene : BlockScene
 {
-    protected override BlockResource BlockResource { get; set; } = new DialogueBlockResource();
+    public new DialogueBlockResource BlockResource { get; set; } = new ();
     
     private TextEdit _textEdit;
     
     public override void _Ready()
     {
+        base._Ready();
+        
         _textEdit = GetNode<TextEdit>("TextEdit");
         _textEdit.FocusEntered += TextEditOnFocusEntered;
         _textEdit.FocusExited += TextEditOnFocusExited;

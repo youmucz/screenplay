@@ -11,7 +11,7 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class BlockResource : Resource
 {
-    [BlockMeta] public virtual StringName Type { get; set; }
+    [BlockMeta] public virtual StringName BlockType { get; set; }
     
     /// <summary>需要存储到Resource本地文件里的参数和参数值。</summary>
     private readonly List<PropertyInfo> _metaPropertyInfo;

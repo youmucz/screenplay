@@ -6,10 +6,14 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class TextBlockScene : BlockScene
 {
+    public new TextBlockResource BlockResource { get; set; } = new ();
+    
     private TextEdit _textEdit;
     
     public override void _Ready()
     {
+        base._Ready();
+        
         _textEdit = GetNode<TextEdit>("TextEdit");
         _textEdit.FocusEntered += TextEditOnFocusEntered;
         _textEdit.FocusExited += TextEditOnFocusExited;
@@ -49,15 +53,34 @@ public partial class TextBlockScene : BlockScene
     //     base._Input(@event);
     // }
     
-    public new bool HasFocus()
+    public override void SetFocus()
     {
-        var res = base.HasFocus();
+        base.SetFocus();
+        _textEdit.GrabFocus();
+    }
+
+    public override bool GetFocus()
+    {
+        var res = base.GetFocus();
         return _textEdit.HasFocus() || res;
     }
 
     public override bool CanDestroy()
     {
         return _textEdit.GetCaretColumn() == 0;
+    }
+    
+    public override void Destroy(BlockScene block)
+    {
+        if (block is TextBlockScene textBlockScene)
+        {
+            SetText(textBlockScene.GetRelicText());
+        }
+    }
+    
+    public void SetText(string text)
+    {
+        _textEdit.Text += text;
     }
     
     /// <summary>
@@ -67,16 +90,5 @@ public partial class TextBlockScene : BlockScene
     public string GetRelicText()
     {
         return _textEdit.GetText();
-    }
-
-    public void SetText(string text)
-    {
-        _textEdit.Text += text;
-    }
-
-    public new void GrabFocus()
-    {
-       base.GrabFocus();
-       _textEdit.GrabFocus();
     }
 }
