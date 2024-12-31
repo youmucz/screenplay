@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://bqsjmxefwlhib"]
+[gd_scene load_steps=2 format=3 uid="uid://bqsjmxefwlhib"]
+
+[ext_resource type="PackedScene" uid="uid://wcj1j8wgaqkf" path="res://addons/screenplay/scenes/blocks/block_menu.tscn" id="1_ecg08"]
 
 [node name="Dialogue" type="MarginContainer"]
 anchors_preset = 15
@@ -11,11 +13,17 @@ focus_mode = 2
 theme_override_constants/margin_left = 150
 theme_override_constants/margin_right = 150
 
-[node name="TextEdit" type="TextEdit" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="BlockMenu" parent="HBoxContainer" instance=ExtResource("1_ecg08")]
+layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/background_color = Color(0.215686, 0.227451, 0.247059, 1)
-theme_override_constants/line_spacing = 0
 context_menu_enabled = false
 wrap_mode = 1
 scroll_fit_content_height = true

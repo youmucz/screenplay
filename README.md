@@ -21,3 +21,4 @@ add: 拆分window和page，支持添加/删除page
 add: 美化页面布局,新增页面编号
 mod: 工厂方法创建block scene
 fix: 注册工厂单例的时机问题
+mod: 新增块菜单模块,根据鼠标位置和点击行为显示/隐藏菜单栏

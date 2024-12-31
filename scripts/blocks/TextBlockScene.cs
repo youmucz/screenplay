@@ -14,7 +14,7 @@ public partial class TextBlockScene : BlockScene
     {
         base._Ready();
         
-        _textEdit = GetNode<TextEdit>("TextEdit");
+        _textEdit = GetNode<TextEdit>("HBoxContainer/TextEdit");
         _textEdit.FocusEntered += TextEditOnFocusEntered;
         _textEdit.FocusExited += TextEditOnFocusExited;
         _textEdit.TextChanged += TextEditOnTextChanged;
@@ -28,13 +28,13 @@ public partial class TextBlockScene : BlockScene
     private void TextEditOnFocusEntered()
     {
         _textEdit.PlaceholderText = PlaceholderText.Text;
-        // EmitSignalFocusEntered();
+        EmitSignalFocusEntered();
     }
     
     private void TextEditOnFocusExited()
     {
         _textEdit.PlaceholderText = "";
-        // EmitSignalFocusExited();
+        EmitSignalFocusExited();
     }
 
     // public override void _Input(InputEvent @event)

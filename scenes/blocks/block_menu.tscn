@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://wcj1j8wgaqkf"]
 
-[ext_resource type="Texture2D" uid="uid://c603nn4pvdyoc" path="res://addons/screenplay/resources/icons/Interfaces/menu.svg" id="1_qlop6"]
+[ext_resource type="Texture2D" uid="uid://dg0c42yp4kajf" path="res://addons/screenplay/resources/icons/Interfaces/icons8-menu-16.png" id="1_fxbnh"]
 [ext_resource type="Script" uid="uid://dif6x8nlq7w5i" path="res://addons/screenplay/scripts/blocks/BlockMenu.cs" id="2_mn2sd"]
 [ext_resource type="Texture2D" uid="uid://b26841287c55p" path="res://addons/screenplay/resources/icons/Dialogue.svg" id="3_ee7ki"]
 [ext_resource type="Texture2D" uid="uid://bj563evda20sy" path="res://addons/screenplay/resources/icons/Interfaces/message-square.svg" id="4_fxbnh"]
@@ -15,29 +15,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = -3.5
+offset_top = -6.0
+offset_right = 3.5
+offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
-texture_normal = ExtResource("1_qlop6")
+toggle_mode = true
+texture_normal = ExtResource("1_fxbnh")
 stretch_mode = 5
 script = ExtResource("2_mn2sd")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -152.0
-offset_top = -103.0
-offset_right = -2.0
-offset_bottom = 103.0
-grow_vertical = 2
+offset_left = -153.5
+offset_top = -104.0
+offset_right = -3.5
+offset_bottom = 113.0
+mouse_filter = 0
 theme_override_constants/separation = 0
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+[node name="Searcher" type="LineEdit" parent="VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Search actions..."
 

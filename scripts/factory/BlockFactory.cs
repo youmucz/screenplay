@@ -58,8 +58,6 @@ public partial class BlockFactory : IFactory
         // 遍历所有类
         foreach (var type in types)
         {
-            StringName blockType = null;
-            
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             
             foreach (var property in properties)

@@ -15,10 +15,27 @@ public partial class BlockScene : MarginContainer
     public Array<BlockScene> ChildrenBlocks = new ();
     
     protected const int TabMargin = 16;
+    protected BlockMenu BlockMenu;
 
     public override void _Ready()
     {
         Uid = Guid.NewGuid();
+        
+        BlockMenu = GetNode<BlockMenu>("HBoxContainer/BlockMenu");
+        BlockMenu.DisableMenu();
+        
+        MouseEntered += OnMouseEntered;
+        MouseExited += OnMouseExited;
+    }
+
+    private void OnMouseEntered()
+    {
+        BlockMenu.EnableMenu();
+    }
+    
+    private void OnMouseExited()
+    {
+        BlockMenu.DisableMenu();
     }
 
     /// <summary>
@@ -79,7 +96,7 @@ public partial class BlockScene : MarginContainer
 
     public virtual void SetFocus()
     {
-        GrabFocus();
+        
     }
 
     public virtual bool GetFocus()
