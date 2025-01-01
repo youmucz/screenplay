@@ -11,7 +11,14 @@ public partial class Page : BlockScene
 {
     public MainWindow MainWindow;
     
-    [Export] private Dictionary<Elements, PackedScene> _blockScenes;
+    /// <summary> current focus block. </summary>
+    public BlockScene GrabBlock
+    {
+        set { _grabBlock = value; _grabBlock?.SetFocus(); }
+        get => _grabBlock;
+    }
+    /// <summary> current focus block. </summary>
+    private BlockScene _grabBlock;
     
     private const int MaxBlocks = 20;
 
@@ -20,27 +27,7 @@ public partial class Page : BlockScene
     private VBoxContainer _blockContainer;
     private VBoxContainer _emptyContainer;
     
-    /// <summary>
-    /// 当前聚焦的block,通过focus参数进行判断
-    /// </summary>
-    private BlockScene CurrentBlockScene
-    {
-        set => value?.SetFocus();
-        get
-        {
-            if (!IsInstanceValid(_blockContainer)) return null;
-            
-            foreach (var node in _blockContainer.GetChildren())
-            {
-                if (node is TextBlockScene block && block.GetFocus())
-                {
-                    return block;
-                }
-            }
-            
-            return null;
-        }
-    }
+    [Export] private Dictionary<Elements, PackedScene> _blockScenes;
     
     public override void _Ready()
     {
@@ -126,7 +113,7 @@ public partial class Page : BlockScene
     /// </summary>
     private bool CheckBeginEdit()
     {
-        var visible = IsInstanceValid(CurrentBlockScene);
+        var visible = IsInstanceValid(GrabBlock);
         
         _vboxContainer.Visible = visible;
         _emptyContainer.Visible = !visible;
@@ -141,7 +128,7 @@ public partial class Page : BlockScene
     /// </summary>
     private void IndentBlock()
     {
-        var currentBlock = CurrentBlockScene;
+        var currentBlock = GrabBlock;
         
         if (currentBlock == null) return;
         
@@ -171,7 +158,7 @@ public partial class Page : BlockScene
     /// </summary>
     private bool UnindentBlock()
     {
-        var currentBlock = CurrentBlockScene;
+        var currentBlock = GrabBlock;
         
         if (!IsInstanceValid(currentBlock) || !currentBlock.CanDestroy()) return false;
 
@@ -199,7 +186,7 @@ public partial class Page : BlockScene
         currentBlock.Parent.ChildrenBlocks.Remove(currentBlock);
         currentBlock.Parent = currentBlock.Parent.Parent ?? this;
         currentBlock.Parent.ChildrenBlocks.Add(this);
-        currentBlock.UnindentParent(currentBlock.Parent);
+        currentBlock.UnindentParent(currentBlock.Parent, currentBlock.Parent != this);
         
         return false;
     }
@@ -228,7 +215,7 @@ public partial class Page : BlockScene
     /// </summary>
     private void FocusBlock(Key keycode)
     {
-        var block = CurrentBlockScene;
+        var block = GrabBlock;
         
         if (!IsInstanceValid(block)) return;
         
@@ -241,7 +228,7 @@ public partial class Page : BlockScene
             _ => block
         };
         
-        CurrentBlockScene = block;
+        if (block != null) GrabBlock = block;
     }
     
     /// <summary>
@@ -256,35 +243,52 @@ public partial class Page : BlockScene
             return;
         }
 
-        var currentBlockScene = CurrentBlockScene;
+        var currentBlockScene = GrabBlock;
         parent ??= currentBlockScene?.Parent ?? this;
         
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
         var newBlock = BlockFactory.Instance.AddBlockScene(Elements.Text, _blockScenes);
         newBlock.IndentParent(parent, parent != this);
         
+        newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
+        newBlock.FocusExited += () =>  OnBlockOnFocusExited(newBlock);
+        
         _blockContainer.AddChild(newBlock);
         _blockContainer.MoveChild(newBlock, toIndex);
         
-        CurrentBlockScene = newBlock;
+        GrabBlock = newBlock;
         CheckBeginEdit();
     }
     
     /// <summary>
-    /// 删除块
+    /// 删除块,删掉的块进入undo堆栈中
     /// </summary>
     private void DelBlock(BlockScene currentBlockScene, BlockScene nextBlock)
     {
         _blockContainer.RemoveChild(currentBlockScene);
-        currentBlockScene.QueueFree();
+        // TODO: input del block into undo stack. 
             
         // if index < 0 means that all block already been deleted.
         nextBlock?.Destroy(currentBlockScene);
-        CurrentBlockScene = nextBlock;
+        GrabBlock = nextBlock;
 
         if (!CheckBeginEdit())
         {
             MainWindow.CallDeferred("DelPage", this);
         }
+    }
+    
+    /// <summary>
+    /// 当前选中的块
+    /// </summary>
+    /// <param name="block"></param>
+    private void OnBlockOnFocusEntered(BlockScene block)
+    {
+        _grabBlock = block;
+    }
+
+    private void OnBlockOnFocusExited(BlockScene block)
+    {
+        
     }
 }

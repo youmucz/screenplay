@@ -60,17 +60,17 @@ public partial class BlockScene : MarginContainer
         // 4.创建关系树
         if (!parent.ChildrenBlocks.Contains(this)) parent.ChildrenBlocks.Add(this);
         // 5.进行缩进
-        if (indent)
-            SetIndent("margin_left", parent.GetThemeConstant("margin_left"));
+        SetIndent("margin_left", indent ? parent.GetThemeConstant("margin_left") : 0);
     }
     
     /// <summary>
     /// 顶格块,只改变margin
     /// </summary>
     /// <param name="parent"></param>
-    public void UnindentParent(BlockScene parent)
+    /// <param name="indent"></param>
+    public void UnindentParent(BlockScene parent, bool indent = true)
     {
-        SetIndent("margin_left", parent.GetThemeConstant("margin_left"));
+        SetIndent("margin_left", indent ? parent.GetThemeConstant("margin_left") : 0);
         
         foreach (var node in ChildrenBlocks)
         {
