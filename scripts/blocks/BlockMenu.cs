@@ -1,39 +1,54 @@
 using Godot;
-using System;
+using Godot.Collections;
 
 namespace Screenplay.Blocks;
 
 [Tool]
 public partial class BlockMenu : TextureButton
 {
-    private LineEdit _searchEdit;
-    private VBoxContainer _vBoxContainer;
+    private PopupMenu _popupMenu;
+    private PopupMenu _elementMenu;
+    [Export] private Dictionary<string, Texture2D> _item2Texture;
     
     public override void _Ready()
     {
-        _searchEdit = GetNode<LineEdit>("VBoxContainer/Searcher");
-        _vBoxContainer = GetNode<VBoxContainer>("VBoxContainer");
+        _popupMenu = GetNode<PopupMenu>("PopupMenu");
+        _elementMenu = GetNode<PopupMenu>("PopupMenu/ElementMenu");
         
         Pressed += OnPressed;
+
+        SetupMenu();
     }
-    
-    public override void _Input(InputEvent @event)
+
+    private void SetupMenu()
     {
-        base._Input(@event);
+        _popupMenu.IndexPressed += PopupMenuOnIndexPressed;
+        _elementMenu.IndexPressed += ElementMenuOnIndexPressed;
+        _popupMenu.CloseRequested += () => DisableMenu(false);
+        _elementMenu.CloseRequested += () => DisableMenu(false);
         
-        if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left })
-        {
-            if (_vBoxContainer.Visible && !_vBoxContainer.GetGlobalRect().HasPoint(GetGlobalMousePosition()))
-            {
-                DisableMenu(false);
-            }
-        }
+        _popupMenu.AddSubmenuNodeItem("Turn into", _elementMenu);
+        _popupMenu.SetItemIcon(5, _item2Texture["Turn into"]);
+    }
+
+    private void ElementMenuOnIndexPressed(long index)
+    {
+        
+    }
+
+    private void PopupMenuOnIndexPressed(long index)
+    {
+        
     }
 
     private void OnPressed()
     {
-        _vBoxContainer.SetVisible(true);
-        _searchEdit.GrabFocus();
+        var pos = GlobalPosition + GetWindow().Position;
+        
+        _popupMenu.Popup(new Rect2I(
+            (int)pos.X - _popupMenu.Size.X, (int)pos.Y - _popupMenu.Size.Y / 2, 
+            _popupMenu.Size.X, _popupMenu.Size.Y
+            ));
     }
 
     private void SetTransparency(float value)
@@ -50,12 +65,11 @@ public partial class BlockMenu : TextureButton
     {
         switch (mouse)
         {
-            case true when !_vBoxContainer.Visible:
+            case true when !_popupMenu.IsVisible():
                 SetTransparency(0.0f);
                 break;
             case false:
                 SetTransparency(0.0f);
-                _vBoxContainer.SetVisible(false);
                 break;
         }
     }
