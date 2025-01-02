@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Godot;
 using Godot.Collections;
 
@@ -6,6 +7,8 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class BlockMenu : TextureButton
 {
+    public BlockScene Block;
+    
     private PopupMenu _popupMenu;
     private PopupMenu _elementMenu;
     [Export] private Dictionary<string, Texture2D> _item2Texture;
@@ -33,7 +36,7 @@ public partial class BlockMenu : TextureButton
 
     private void ElementMenuOnIndexPressed(long index)
     {
-        
+        Block.Page.TurnInto((int)index + 1, Block);
     }
 
     private void PopupMenuOnIndexPressed(long index)

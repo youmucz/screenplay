@@ -36,22 +36,6 @@ public partial class TextBlockScene : BlockScene
         _textEdit.PlaceholderText = "";
         EmitSignalFocusExited();
     }
-
-    // public override void _Input(InputEvent @event)
-    // {
-    //     if (@event is InputEventKey keyEvent)
-    //     {
-    //         if (keyEvent.Keycode is Key.Backspace && keyEvent.Pressed)
-    //         {
-    //             if (_textEdit.Text == "" && _textEdit.HasFocus())
-    //             {
-    //                 DestroySelf.Invoke(this);
-    //             }
-    //         }
-    //     }
-    //     
-    //     base._Input(@event);
-    // }
     
     public override void SetFocus()
     {

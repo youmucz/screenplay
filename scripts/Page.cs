@@ -196,9 +196,33 @@ public partial class Page : BlockScene
     /// </summary>
     /// <param name="currentBlock"></param>
     /// <param name="parent"></param>
-    private void InsertBlock(BlockScene currentBlock, BlockScene parent)
+    public void InsertBlock(BlockScene currentBlock, BlockScene parent)
     {
         
+    }
+    
+    /// <summary>
+    /// 转换元素类型
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="block"></param>
+    public void TurnInto(int index, BlockScene block)
+    {
+        var blockType = (Elements)index;
+        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, _blockScenes);
+        
+        if (newBlock != null)
+        {
+            newBlock.Page = this;
+            newBlock.IndentParent(block.Parent, block.Parent != this);
+        
+            newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
+            newBlock.FocusExited += () =>  OnBlockOnFocusExited(newBlock);
+        
+            _blockContainer.AddChild(newBlock);
+            _blockContainer.MoveChild(newBlock, block.GetIndex());
+            _blockContainer.RemoveChild(block);
+        }
     }
     
     /// <summary>
@@ -249,6 +273,7 @@ public partial class Page : BlockScene
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
         var newBlock = BlockFactory.Instance.AddBlockScene(Elements.Text, _blockScenes);
         newBlock.IndentParent(parent, parent != this);
+        newBlock.Page = this;
         
         newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
         newBlock.FocusExited += () =>  OnBlockOnFocusExited(newBlock);

@@ -8,10 +8,11 @@ namespace Screenplay.Blocks;
 [Tool]
 public partial class BlockScene : MarginContainer
 {
-    public Guid Uid { get; set; }
+    public Guid Uid;
+    public Page Page;
     public BlockScene Parent { get; set; }
     
-    public BlockResource BlockResource { get; set; } = new ();
+    public virtual BlockResource BlockResource { get; set; } = new ();
     public Array<BlockScene> ChildrenBlocks = new ();
     
     protected const int TabMargin = 16;
@@ -22,6 +23,7 @@ public partial class BlockScene : MarginContainer
         Uid = Guid.NewGuid();
         
         BlockMenu = GetNode<BlockMenu>("HBoxContainer/BlockMenu");
+        BlockMenu.Block = this;
         BlockMenu.DisableMenu();
         
         MouseEntered += OnMouseEntered;

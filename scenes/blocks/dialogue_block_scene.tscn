@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqsjmxefwlhib"]
+[gd_scene load_steps=3 format=3 uid="uid://bqsjmxefwlhib"]
 
 [ext_resource type="PackedScene" uid="uid://wcj1j8wgaqkf" path="res://addons/screenplay/scenes/blocks/block_menu.tscn" id="1_ecg08"]
+[ext_resource type="Script" uid="uid://babfno8mlhh6c" path="res://addons/screenplay/scripts/blocks/DialogueBlockScene.cs" id="1_ju1rl"]
 
 [node name="Dialogue" type="MarginContainer"]
 anchors_preset = 15
@@ -12,6 +13,7 @@ grow_vertical = 2
 focus_mode = 2
 theme_override_constants/margin_left = 150
 theme_override_constants/margin_right = 150
+script = ExtResource("1_ju1rl")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
