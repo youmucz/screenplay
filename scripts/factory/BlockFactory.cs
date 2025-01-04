@@ -3,6 +3,7 @@ using System.Reflection;
 using Godot;
 using Godot.Collections;
 using Screenplay.Blocks;
+using Screenplay.Resources;
 
 namespace Screenplay.Factory;
 
@@ -79,16 +80,15 @@ public partial class BlockFactory : IFactory
     /// Using reflection to call generic methods to generate block resource.
     /// </summary>
     /// <param name="blockType"></param>
-    /// <param name="resource"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public BlockResource AddBlockResource(StringName blockType, ScreenplayResource resource, Dictionary data)
+    public BlockResource AddBlockResource(StringName blockType, Dictionary data)
     {
         BlockResource blockResource = null;
         
         if (_blockResources.TryGetValue(blockType, out var type))
         {
-            blockResource = (BlockResource)Activator.CreateInstance(type, new object[] { resource, data });
+            blockResource = (BlockResource)Activator.CreateInstance(type, new object[] { data });
         }
 		
         return blockResource;

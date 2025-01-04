@@ -36,7 +36,7 @@ public partial class BlockMenu : TextureButton
 
     private void ElementMenuOnIndexPressed(long index)
     {
-        Block.Page.TurnInto((int)index + 1, Block);
+        Block.PageBlockScene.TurnInto((int)index + 1, Block);
     }
 
     private void PopupMenuOnIndexPressed(long index)

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://6mb756dh3di5"]
+
+[ext_resource type="Script" uid="uid://bp2o2pic25111" path="res://addons/screenplay/scripts/resources/ScreenplayResource.cs" id="1_8ha6w"]
+
+[resource]
+script = ExtResource("1_8ha6w")
+FileDir = "res://addons/screenplay/data"
+Filename = "default.tres"
+Filepath = "res://addons/screenplay/data/default.tres"
+EngineVersion = "4.4-dev7 (official)"
+PageData = Array[Dictionary]([{
+"BlockGuid": "",
+"BlockParent": "",
+"BlockType": "Text",
+"Content": [],
+"Properties": {}
+}])

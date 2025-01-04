@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://3goyqtx767ro"]
+[gd_scene load_steps=7 format=3 uid="uid://3goyqtx767ro"]
 
 [ext_resource type="Script" uid="uid://sk2jjmqa6j0f" path="res://addons/screenplay/scripts/MainWindow.cs" id="1_aytf0"]
-[ext_resource type="PackedScene" uid="uid://fprihg4cwolc" path="res://addons/screenplay/scenes/page.tscn" id="2_3tggo"]
+[ext_resource type="Texture2D" uid="uid://c2j3cjvfh6djh" path="res://addons/screenplay/resources/icons/Files/file-plus.svg" id="2_3tggo"]
+[ext_resource type="Texture2D" uid="uid://cnjllv1f2e63q" path="res://addons/screenplay/resources/icons/Files/file.svg" id="3_4ciac"]
+[ext_resource type="Script" uid="uid://bcpbpeqln62k7" path="res://addons/screenplay/scripts/window/Workspace.cs" id="3_6h6in"]
+[ext_resource type="Texture2D" uid="uid://c1hf1qpmeo18o" path="res://addons/screenplay/resources/icons/Editor/save.svg" id="4_0y4td"]
+[ext_resource type="Script" uid="uid://cbcfuu1hs2akg" path="res://addons/screenplay/scripts/FileManager.cs" id="6_4ciac"]
 
 [node name="MainWindow" type="Control"]
 layout_mode = 3
@@ -13,19 +17,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_aytf0")
-_pageScene = ExtResource("2_3tggo")
 
-[node name="Background" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(0, 648)
+[node name="Main" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +26,94 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PageContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="Menus" type="HBoxContainer" parent="Main"]
 layout_mode = 2
-size_flags_horizontal = 3
+
+[node name="FileMenu" type="MenuButton" parent="Main/Menus"]
+layout_mode = 2
+text = "File"
+item_count = 4
+popup/item_0/text = "New"
+popup/item_0/icon = ExtResource("2_3tggo")
+popup/item_0/id = 0
+popup/item_1/text = "Open"
+popup/item_1/icon = ExtResource("3_4ciac")
+popup/item_1/id = 1
+popup/item_2/text = "Save"
+popup/item_2/icon = ExtResource("4_0y4td")
+popup/item_2/id = 2
+popup/item_3/text = "Save As"
+popup/item_3/icon = ExtResource("4_0y4td")
+popup/item_3/id = 3
+
+[node name="EditMenu" type="MenuButton" parent="Main/Menus"]
+layout_mode = 2
+text = "Edit"
+
+[node name="DebugMenu" type="MenuButton" parent="Main/Menus"]
+layout_mode = 2
+text = "Debug"
+
+[node name="HelpMenu" type="MenuButton" parent="Main/Menus"]
+layout_mode = 2
+text = "Help"
+
+[node name="HSeparator" type="HSeparator" parent="Main"]
+layout_mode = 2
+
+[node name="Tools" type="HBoxContainer" parent="Main"]
+visible = false
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="Main"]
+layout_mode = 2
+
+[node name="Workspace" type="VBoxContainer" parent="Main"]
+layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("3_6h6in")
+
+[node name="TabBar" type="TabBar" parent="Main/Workspace"]
+layout_mode = 2
+tab_close_display_policy = 2
+
+[node name="TabContainer" type="TabContainer" parent="Main/Workspace"]
+layout_mode = 2
+size_flags_vertical = 3
+tabs_visible = false
+
+[node name="HSeparator3" type="HSeparator" parent="Main"]
+layout_mode = 2
+
+[node name="Status" type="HBoxContainer" parent="Main"]
+layout_mode = 2
+alignment = 2
+
+[node name="Version" type="Label" parent="Main/Status"]
+layout_mode = 2
+text = "1.2.4"
+
+[node name="FileManager" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("6_4ciac")
+
+[node name="NewFileDialog" type="FileDialog" parent="FileManager"]
+title = "Create a File"
+mode_overrides_title = false
+filters = PackedStringArray("*.tres; Screenplay")
+
+[node name="OpenFileDialog" type="FileDialog" parent="FileManager"]
+auto_translate_mode = 1
+title = "Open a File"
+ok_button_text = "Open"
+mode_overrides_title = false
+file_mode = 0
+filters = PackedStringArray("*.tres; Screenplay")
+
+[node name="SaveFileDialog" type="FileDialog" parent="FileManager"]
+auto_translate_mode = 1
+mode_overrides_title = false
+filters = PackedStringArray("*.tres; Screenplay")

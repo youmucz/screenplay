@@ -1,17 +1,23 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 using Screenplay.Factory;
+using Screenplay.Blocks;
 
-namespace Screenplay.Blocks;
+namespace Screenplay.Resources;
 
 
 [Tool]
 public partial class BlockResource : Resource
 {
-    [BlockMeta] public virtual StringName BlockType { get; set; }
+    [BlockMeta] public virtual Guid BlockGuid { get; set; } = Guid.Empty;
+    [BlockMeta] public virtual Guid BlockParent { get; set; } = Guid.Empty;
+    [BlockMeta] public virtual string BlockType { get; set; } = string.Empty;
+    [BlockMeta] public virtual List<Guid> Content { get; set; } = new();
+    [BlockMeta] public virtual Godot.Collections.Dictionary<string, string> Properties { get; set; } = new ();
     
     /// <summary>需要存储到Resource本地文件里的参数和参数值。</summary>
     private readonly List<PropertyInfo> _metaPropertyInfo;
@@ -23,13 +29,9 @@ public partial class BlockResource : Resource
     /// <summary>
     /// 编辑器模式创建节点 @base
     /// </summary>
-    /// <param name="screenplayResource"></param>
-    /// <param name="blockScene"></param>
     /// <param name="data"></param>
-    public BlockResource(ScreenplayResource screenplayResource, BlockScene blockScene, Dictionary data)
+    public BlockResource(Dictionary data)
     {
-        // DialogueGraphResource = screenplayResource;
-    
         Deserialize(data);
     
         // 加载用作序列化的meta数据

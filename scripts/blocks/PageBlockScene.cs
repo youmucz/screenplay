@@ -2,14 +2,16 @@ using Godot;
 using System;
 using Godot.Collections;
 using Screenplay.Factory;
+using Screenplay.Windows;
+using Screenplay.Resources;
 
 namespace Screenplay.Blocks;
 
 
 [Tool]
-public partial class Page : BlockScene
+public partial class PageBlockScene : BlockScene
 {
-    public MainWindow MainWindow;
+    public ScreenplayEdit SEdit;
     
     /// <summary> current focus block. </summary>
     public BlockScene GrabBlock
@@ -35,6 +37,8 @@ public partial class Page : BlockScene
         _emptyContainer = GetNode<VBoxContainer>("BlockMarginContainer/EmptyContainer");
         _blockContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer/BlockContainer");
         _pageNumber = GetNode<Label>("BlockMarginContainer/VBoxContainer/PageNumber");
+
+        _pageNumber.Text = "1.";
     }
     
     public override void _Input(InputEvent @event)
@@ -213,7 +217,7 @@ public partial class Page : BlockScene
         
         if (newBlock != null)
         {
-            newBlock.Page = this;
+            newBlock.PageBlockScene = this;
             newBlock.IndentParent(block.Parent, block.Parent != this);
         
             newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
@@ -263,7 +267,7 @@ public partial class Page : BlockScene
         // 固定每页的长度
         if (_blockContainer.GetChildCount() >= MaxBlocks)
         {
-            MainWindow.AddPage();
+            SEdit.AddPage();
             return;
         }
 
@@ -273,7 +277,7 @@ public partial class Page : BlockScene
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
         var newBlock = BlockFactory.Instance.AddBlockScene(Elements.Text, _blockScenes);
         newBlock.IndentParent(parent, parent != this);
-        newBlock.Page = this;
+        newBlock.PageBlockScene = this;
         
         newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
         newBlock.FocusExited += () =>  OnBlockOnFocusExited(newBlock);
@@ -299,7 +303,7 @@ public partial class Page : BlockScene
 
         if (!CheckBeginEdit())
         {
-            MainWindow.CallDeferred("DelPage", this);
+            SEdit.CallDeferred("DelPage", this);
         }
     }
     

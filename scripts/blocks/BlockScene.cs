@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
+using Screenplay.Resources;
 
 namespace Screenplay.Blocks;
 
@@ -9,7 +10,7 @@ namespace Screenplay.Blocks;
 public partial class BlockScene : MarginContainer
 {
     public Guid Uid;
-    public Page Page;
+    public PageBlockScene PageBlockScene;
     public BlockScene Parent { get; set; }
     
     public virtual BlockResource BlockResource { get; set; } = new ();

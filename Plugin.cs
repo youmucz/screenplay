@@ -1,5 +1,5 @@
 using Godot;
-
+using Screenplay.Windows;
 
 [Tool]
 public partial class Plugin : EditorPlugin
