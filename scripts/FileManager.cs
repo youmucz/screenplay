@@ -72,23 +72,23 @@ public partial class FileManager : Control
 	{
 		var editor = _screenplayEdit.Instantiate<ScreenplayEdit>();
 		
-		var pageData = new Array<Dictionary>(){
-			new Dictionary
-			{
-				{"BlockGuid", ""}, 
-				{"BlockType", Elements.Text.ToString()}, 
-				{"BlockParent", ""},
-				{"Content", new Array()},
-				{"Properties", new Dictionary()},
-			}
-		};
+		// var pageData = new Array<Dictionary>(){
+		// 	new()
+		// 	{
+		// 		{"BlockGuid", Guid.NewGuid().ToString()}, 
+		// 		{"BlockType", Elements.Page.ToString()}, 
+		// 		{"BlockParent", ""},
+		// 		{"Content", new Array()},
+		// 		{"Properties", new Dictionary()},
+		// 	}
+		// };
 	
 		var data = new ScreenplayResource()
 		{
 			FileDir = dir,
 			Filename = filename,
 			Filepath = filepath,
-			PageData = pageData,
+			// PageData = pageData,
 		};
 		
 		Workspace.AddEditor(editor);

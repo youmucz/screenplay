@@ -8,7 +8,7 @@ using Screenplay.Resources;
 namespace Screenplay.Blocks;
 
 
-[Tool]
+[Tool, BlockType(Elements.Page)]
 public partial class PageBlockScene : BlockScene
 {
     public ScreenplayEdit SEdit;

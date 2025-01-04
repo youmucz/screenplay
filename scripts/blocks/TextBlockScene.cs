@@ -2,7 +2,7 @@ using Godot;
 
 namespace Screenplay.Blocks;
 
-[Tool]
+[Tool, BlockType(Elements.Text)]
 public partial class TextBlockScene : BlockScene
 {
     public new TextBlockResource BlockResource { get; set; } = new ();

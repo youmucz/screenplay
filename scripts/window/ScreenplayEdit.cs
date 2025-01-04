@@ -13,29 +13,18 @@ public partial class ScreenplayEdit : ScrollContainer
     public MainWindow MainWindow;
     public ScreenplayResource MScreenplayResource;
     
-    private PageBlockScene _page;
+    private PackedScene _pageScene;
     private VBoxContainer _pageContainer;
 
     public override void _Ready()
     {
-        _page = GetNode<PageBlockScene>("PageContainer/Page");
         _pageContainer = GetNode<VBoxContainer>("PageContainer");
-        
-        _pageContainer.RemoveChild(_page);
+        _pageScene = GD.Load<PackedScene>("res://addons/screenplay/scenes/blocks/page_block_scene.tscn");
     }
 
     public PageBlockScene AddPage(Dictionary data = null)
     {
-        data ??= new Dictionary
-        {
-            { "BlockGuid", "" },
-            { "BlockType", Elements.Text.ToString() },
-            { "BlockParent", "" },
-            { "Content", new Array() },
-            { "Properties", new Dictionary() },
-        };
-        
-        var page = (PageBlockScene)_page.Duplicate();
+        var page = _pageScene.Instantiate<PageBlockScene>();
         page.BlockResource = BlockFactory.Instance.AddBlockResource(Elements.Page.ToString(), data);
         
         _pageContainer.AddChild(page);
@@ -82,9 +71,9 @@ public partial class ScreenplayEdit : ScrollContainer
 
         foreach (var child in _pageContainer.GetChildren())
         {
-            if (child is PageBlockScene block)
+            if (child is PageBlockScene page)
             {
-                data.Add(block.BlockResource.Serialize());
+                data.Add(page.BlockResource.Serialize());
             }
         }
         

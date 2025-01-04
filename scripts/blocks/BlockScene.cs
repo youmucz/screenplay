@@ -6,6 +6,13 @@ using Screenplay.Resources;
 namespace Screenplay.Blocks;
 
 
+[Tool, AttributeUsage(AttributeTargets.Class)]
+public class BlockTypeAttribute(Elements blockType) : Attribute
+{
+    public Elements BlockType { get; set; } = blockType;
+}
+
+
 [Tool]
 public partial class BlockScene : MarginContainer
 {
@@ -18,7 +25,7 @@ public partial class BlockScene : MarginContainer
     
     protected const int TabMargin = 16;
     protected BlockMenu BlockMenu;
-
+    
     public override void _Ready()
     {
         Uid = Guid.NewGuid();

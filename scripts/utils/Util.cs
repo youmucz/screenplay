@@ -1,6 +1,6 @@
 
 
-public partial class Util
+public class Util
 {
     
 }

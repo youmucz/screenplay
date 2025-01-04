@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Godot.Collections;
 
@@ -12,14 +13,15 @@ public partial class ScreenplayResource : Resource
     [Export] public string Filepath;
     [Export] public string EngineVersion = Engine.GetVersionInfo()["string"].ToString();
     
-    [Export] public Array<Dictionary> PageData = new (){
-        new Dictionary
+    [Export] public Array<Dictionary> PageData =
+    [
+        new()
         {
-            {"BlockGuid", ""}, 
-            {"BlockType", Elements.Text.ToString()}, 
-            {"BlockParent", ""},
-            {"Content", new Array()},
-            {"Properties", new Dictionary()},
+            { "BlockGuid", Guid.NewGuid().ToString() },
+            { "BlockType", Elements.Page.ToString() },
+            { "BlockParent", "" },
+            { "Content", new Godot.Collections.Array() },
+            { "Properties", new Dictionary() },
         }
-    };
+    ];
 }

@@ -59,19 +59,18 @@ public partial class BlockFactory : IFactory
         // 遍历所有类
         foreach (var type in types)
         {
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            // var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             
-            foreach (var property in properties)
+            // 获取类上的自定义属性
+            var attributes = type.GetCustomAttributes(typeof(BlockTypeAttribute), false);
+            
+            if (attributes.Length > 0)
             {
-                if (property.Name != "BlockResource") continue;
-                    
-                var resource = (BlockResource)property.GetValue(Activator.CreateInstance(type));
-
-                if (resource?.BlockType != null)
-                {
-                    _blockScenes.TryAdd(resource.BlockType, type);
-                    _blockResources.TryAdd(resource.BlockType, resource.GetType());
-                }
+                // 获取第一个属性并打印其描述
+                var attribute = (BlockTypeAttribute)attributes[0];
+                
+                if (type.IsSubclassOf(typeof(BlockScene))) _blockScenes.TryAdd(attribute.BlockType.ToString(), type);
+                if (type.IsSubclassOf(typeof(BlockResource))) _blockResources.TryAdd(attribute.BlockType.ToString(), type);
             }
         }
     }
