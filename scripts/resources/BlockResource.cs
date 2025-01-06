@@ -17,6 +17,7 @@ public partial class BlockResource : Resource
     [BlockMeta] public virtual string BlockType { get; set; }
     [BlockMeta] public virtual Array<string> Content { get; set; }
     [BlockMeta] public virtual Godot.Collections.Dictionary<string, string> Properties { get; set; }
+    [BlockMeta] public virtual Godot.Collections.Dictionary<string, Dictionary> Children { get; set; }
     
     /// <summary>需要存储到Resource本地文件里的参数和参数值。</summary>
     private readonly List<PropertyInfo> _metaPropertyInfo;

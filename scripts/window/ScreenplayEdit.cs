@@ -73,7 +73,7 @@ public partial class ScreenplayEdit : ScrollContainer
         {
             if (child is PageBlockScene page)
             {
-                data.Add(page.BlockResource.Serialize());
+                data.Add(page.Serialize());
             }
         }
         

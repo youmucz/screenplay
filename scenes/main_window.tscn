@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cnjllv1f2e63q" path="res://addons/screenplay/resources/icons/Files/file.svg" id="3_4ciac"]
 [ext_resource type="Script" uid="uid://bcpbpeqln62k7" path="res://addons/screenplay/scripts/window/Workspace.cs" id="3_6h6in"]
 [ext_resource type="Texture2D" uid="uid://c1hf1qpmeo18o" path="res://addons/screenplay/resources/icons/Editor/save.svg" id="4_0y4td"]
-[ext_resource type="Script" uid="uid://cbcfuu1hs2akg" path="res://addons/screenplay/scripts/FileManager.cs" id="6_4ciac"]
+[ext_resource type="Script" uid="uid://cbcfuu1hs2akg" path="res://addons/screenplay/scripts/File/FileManager.cs" id="6_4ciac"]
 
 [node name="MainWindow" type="Control"]
 layout_mode = 3

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using Godot.Collections;
 using Screenplay.Resources;
 
@@ -16,26 +17,41 @@ public class BlockTypeAttribute(Elements blockType) : Attribute
 [Tool]
 public partial class BlockScene : MarginContainer
 {
-    public Guid Uid;
-    public PageBlockScene PageBlockScene;
-    public BlockScene Parent { get; set; }
+    public Guid Uid
+    {
+        get => Guid.Parse(BlockResource.BlockGuid);
+        set => BlockResource.BlockGuid = value.ToString();
+    }
+
+    public BlockScene Parent
+    {
+        get => _parent;
+        set { _parent = value; BlockResource.BlockParent = value.Uid.ToString(); }
+    }
     
-    public virtual BlockResource BlockResource { get; set; } = new ();
+    public PageBlockScene PageBlockScene;
+    public BlockResource BlockResource { get; set; } = new ();
     public Array<BlockScene> ChildrenBlocks = new ();
     
     protected const int TabMargin = 16;
     protected BlockMenu BlockMenu;
+
+    private BlockScene _parent;
     
     public override void _Ready()
     {
-        Uid = Guid.NewGuid();
+        BlockResource.Properties = new();
+        BlockResource.Children = new();
         
-        BlockMenu = GetNode<BlockMenu>("HBoxContainer/BlockMenu");
-        BlockMenu.Block = this;
-        BlockMenu.DisableMenu();
+        BlockMenu = GetNodeOrNull<BlockMenu>("HBoxContainer/BlockMenu");
         
-        MouseEntered += OnMouseEntered;
-        MouseExited += OnMouseExited;
+        if (BlockMenu != null)
+        {
+            BlockMenu.Block = this;
+            BlockMenu.DisableMenu();
+            MouseEntered += OnMouseEntered;
+            MouseExited += OnMouseExited;
+        }
     }
 
     private void OnMouseEntered()
@@ -89,6 +105,35 @@ public partial class BlockScene : MarginContainer
     }
     
     /// <summary>
+    /// 添加孩子区块
+    /// </summary>
+    /// <param name="block"></param>
+    public void AddChild(BlockScene block)
+    {
+        ChildrenBlocks.Add(block);
+
+        if (!BlockResource.Children.ContainsKey(block.BlockResource.BlockGuid))
+        {
+            BlockResource.Children.TryAdd(block.BlockResource.BlockGuid, block.BlockResource.Serialize());
+        }
+       
+    }
+    
+    /// <summary>
+    /// 删除孩子区块
+    /// </summary>
+    /// <param name="block"></param>
+    public void DekChild(BlockScene block)
+    {
+        ChildrenBlocks.Remove(block);
+
+        if (BlockResource.Children.ContainsKey(block.BlockResource.BlockGuid))
+        {
+            BlockResource.Children.Remove(block.BlockResource.BlockGuid);
+        }
+    }
+    
+    /// <summary>
     /// 删除block后要做的事
     /// </summary>
     /// <param name="block"></param>
@@ -117,5 +162,34 @@ public partial class BlockScene : MarginContainer
     public virtual void SetIndent(StringName name, int value)
     {
         AddThemeConstantOverride(name, value + TabMargin);
+    }
+    
+    /// <summary>
+    /// 序列化meta数据,用来存储到resource本地文件上
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary Serialize()
+    {
+        BlockResource.Children.Clear();
+ 
+        foreach (var block in ChildrenBlocks)
+        {
+            BlockResource.Children.Add(block.BlockResource.BlockGuid, block.Serialize());
+        }
+        
+        var data = BlockResource.Serialize();
+
+        return data;
+    }
+
+    /// <summary>
+    /// 反序列化数据
+    /// </summary>
+    /// <param name="data"></param>
+    public void Deserialize(Dictionary data)
+    {
+        if (data == null) return;
+        
+        BlockResource.Deserialize(data);
     }
 }

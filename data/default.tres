@@ -12,6 +12,29 @@ PageData = Array[Dictionary]([{
 "BlockGuid": "b877e497-2908-4ef5-9ef3-03539193d9f0",
 "BlockParent": "",
 "BlockType": "Page",
+"Children": Dictionary[String, Dictionary]({
+"e48e4f8b-3456-47ae-9a67-90dd5ac1031c": {
+"BlockGuid": "e48e4f8b-3456-47ae-9a67-90dd5ac1031c",
+"BlockParent": "b877e497-2908-4ef5-9ef3-03539193d9f0",
+"BlockType": "Text",
+"Children": Dictionary[String, Dictionary]({
+"b6c82973-b970-4654-a743-216f6e169774": {
+"BlockGuid": "b6c82973-b970-4654-a743-216f6e169774",
+"BlockParent": "e48e4f8b-3456-47ae-9a67-90dd5ac1031c",
+"BlockType": "Text",
+"Children": Dictionary[String, Dictionary]({}),
+"Content": null,
+"Properties": Dictionary[String, String]({
+"text": "2"
+})
+}
+}),
+"Content": null,
+"Properties": Dictionary[String, String]({
+"text": "1"
+})
+}
+}),
 "Content": [],
-"Properties": {}
+"Properties": Dictionary[String, String]({})
 }])

@@ -109,6 +109,10 @@ public partial class BlockFactory : IFactory
             block = (BlockScene)typeof(PackedScene).GetMethod("InstantiateOrNull")?.MakeGenericMethod(type)
                 .Invoke(blockScene, [PackedScene.GenEditState.Disabled]);
         }
+
+        var resource = AddBlockResource(blockType.ToString(), null);
+        
+        if (block != null) block.BlockResource = resource;
 		
         return block;
     }

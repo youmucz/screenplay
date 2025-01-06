@@ -1,12 +1,11 @@
 using Godot;
+using Godot.Collections;
 
 namespace Screenplay.Blocks;
 
 [Tool, BlockType(Elements.Text)]
 public partial class TextBlockScene : BlockScene
 {
-    public new TextBlockResource BlockResource { get; set; } = new ();
-    
     private TextEdit _textEdit;
     
     public override void _Ready()
@@ -21,7 +20,7 @@ public partial class TextBlockScene : BlockScene
 
     private void TextEditOnTextChanged()
     {
-        
+        BlockResource.Properties.Add("text", _textEdit.Text);
     }
 
     private void TextEditOnFocusEntered()

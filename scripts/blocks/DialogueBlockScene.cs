@@ -5,8 +5,6 @@ namespace Screenplay.Blocks;
 [Tool, BlockType(Elements.Dialogue)]
 public partial class DialogueBlockScene : BlockScene
 {
-    public new DialogueBlockResource BlockResource { get; set; } = new ();
-    
     private TextEdit _textEdit;
     
     public override void _Ready()

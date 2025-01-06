@@ -33,6 +33,8 @@ public partial class PageBlockScene : BlockScene
     
     public override void _Ready()
     {
+        base._Ready();
+        
         _vboxContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer");
         _emptyContainer = GetNode<VBoxContainer>("BlockMarginContainer/EmptyContainer");
         _blockContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer/BlockContainer");
