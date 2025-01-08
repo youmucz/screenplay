@@ -98,8 +98,9 @@ public partial class BlockFactory : IFactory
     /// </summary>
     /// <param name="blockType"></param>
     /// <param name="blockScenes"></param>
+    /// <param name="data"> resource data </param>
     /// <returns></returns>
-    public BlockScene AddBlockScene(Elements blockType, Dictionary<Elements, PackedScene> blockScenes)
+    public BlockScene AddBlockScene(Elements blockType, Dictionary<Elements, PackedScene> blockScenes, Dictionary data=null)
     {
         BlockScene block = null;
         
@@ -110,7 +111,7 @@ public partial class BlockFactory : IFactory
                 .Invoke(blockScene, [PackedScene.GenEditState.Disabled]);
         }
 
-        var resource = AddBlockResource(blockType.ToString(), null);
+        var resource = AddBlockResource(blockType.ToString(), data);
         
         if (block != null) block.BlockResource = resource;
 		

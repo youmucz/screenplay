@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c6x8jrgv6o8y4"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bl4nkqakcpd73"]
 
 [ext_resource type="Script" uid="uid://bp2o2pic25111" path="res://addons/screenplay/scripts/resources/ScreenplayResource.cs" id="1_8ha6w"]
 
@@ -9,32 +9,67 @@ Filename = "default.tres"
 Filepath = "res://addons/screenplay/data/default.tres"
 EngineVersion = "4.4-dev7 (official)"
 PageData = Array[Dictionary]([{
-"BlockGuid": "b877e497-2908-4ef5-9ef3-03539193d9f0",
+"BlockGuid": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
 "BlockParent": "",
 "BlockType": "Page",
 "Children": Dictionary[String, Dictionary]({
-"e48e4f8b-3456-47ae-9a67-90dd5ac1031c": {
-"BlockGuid": "e48e4f8b-3456-47ae-9a67-90dd5ac1031c",
-"BlockParent": "b877e497-2908-4ef5-9ef3-03539193d9f0",
+"148ec939-3ee3-4d40-aa32-fd87bd6370f2": {
+"BlockGuid": "148ec939-3ee3-4d40-aa32-fd87bd6370f2",
+"BlockParent": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
 "BlockType": "Text",
-"Children": Dictionary[String, Dictionary]({
-"b6c82973-b970-4654-a743-216f6e169774": {
-"BlockGuid": "b6c82973-b970-4654-a743-216f6e169774",
-"BlockParent": "e48e4f8b-3456-47ae-9a67-90dd5ac1031c",
+"Children": Dictionary[String, Dictionary]({}),
+"Content": [],
+"Properties": Dictionary[String, String]({})
+},
+"2dd7cf76-a113-4f7e-bb11-98d7457d55cc": {
+"BlockGuid": "2dd7cf76-a113-4f7e-bb11-98d7457d55cc",
+"BlockParent": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
+"BlockType": "Text",
+"Children": Dictionary[String, Dictionary]({}),
+"Content": null,
+"Properties": Dictionary[String, String]({
+"text": "1"
+})
+},
+"4f4bee80-4ee1-4a6d-97fc-492a1e3b6b54": {
+"BlockGuid": "4f4bee80-4ee1-4a6d-97fc-492a1e3b6b54",
+"BlockParent": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
+"BlockType": "Text",
+"Children": Dictionary[String, Dictionary]({}),
+"Content": [],
+"Properties": Dictionary[String, String]({
+"text": "1"
+})
+},
+"9e490e03-c2db-4e3d-9ba4-1fd3c187232c": {
+"BlockGuid": "9e490e03-c2db-4e3d-9ba4-1fd3c187232c",
+"BlockParent": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
 "BlockType": "Text",
 "Children": Dictionary[String, Dictionary]({}),
 "Content": null,
 "Properties": Dictionary[String, String]({
 "text": "2"
 })
-}
-}),
-"Content": null,
+},
+"a5334e71-8169-4067-b9bd-999a5ec99a25": {
+"BlockGuid": "a5334e71-8169-4067-b9bd-999a5ec99a25",
+"BlockParent": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
+"BlockType": "Text",
+"Children": Dictionary[String, Dictionary]({}),
+"Content": [],
 "Properties": Dictionary[String, String]({
-"text": "1"
+"text": "2"
 })
+},
+"cafd1193-3194-450e-8e39-fdef4c0de1fd": {
+"BlockGuid": "cafd1193-3194-450e-8e39-fdef4c0de1fd",
+"BlockParent": "a13f4d5d-5eb7-4206-bae7-4c7dc83d1798",
+"BlockType": "Text",
+"Children": Dictionary[String, Dictionary]({}),
+"Content": null,
+"Properties": Dictionary[String, String]({})
 }
 }),
 "Content": [],
-"Properties": Dictionary[String, String]({})
+"Properties": {}
 }])

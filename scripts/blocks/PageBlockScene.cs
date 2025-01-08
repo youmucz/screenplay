@@ -29,8 +29,6 @@ public partial class PageBlockScene : BlockScene
     private VBoxContainer _blockContainer;
     private VBoxContainer _emptyContainer;
     
-    [Export] private Dictionary<Elements, PackedScene> _blockScenes;
-    
     public override void _Ready()
     {
         base._Ready();
@@ -215,11 +213,11 @@ public partial class PageBlockScene : BlockScene
     public void TurnInto(int index, BlockScene block)
     {
         var blockType = (Elements)index;
-        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, _blockScenes);
+        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, SEdit.BlockScenes);
         
         if (newBlock != null)
         {
-            newBlock.PageBlockScene = this;
+            newBlock.Page = this;
             newBlock.IndentParent(block.Parent, block.Parent != this);
         
             newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
@@ -264,7 +262,7 @@ public partial class PageBlockScene : BlockScene
     /// <summary>
     /// 添加块
     /// </summary>
-    private void AddBlock(BlockScene parent = null)
+    public void AddBlock(Elements blockType=Elements.Text, BlockScene parent = null, Dictionary data=null)
     {
         // 固定每页的长度
         if (_blockContainer.GetChildCount() >= MaxBlocks)
@@ -277,9 +275,9 @@ public partial class PageBlockScene : BlockScene
         parent ??= currentBlockScene?.Parent ?? this;
         
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
-        var newBlock = BlockFactory.Instance.AddBlockScene(Elements.Text, _blockScenes);
+        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, SEdit.BlockScenes, data);
         newBlock.IndentParent(parent, parent != this);
-        newBlock.PageBlockScene = this;
+        newBlock.Page = this;
         
         newBlock.FocusEntered += () => OnBlockOnFocusEntered(newBlock);
         newBlock.FocusExited += () =>  OnBlockOnFocusExited(newBlock);

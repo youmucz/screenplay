@@ -13,6 +13,8 @@ public partial class ScreenplayEdit : ScrollContainer
     public MainWindow MainWindow;
     public ScreenplayResource MScreenplayResource;
     
+    [Export] public Dictionary<Elements, PackedScene> BlockScenes;
+    
     private PackedScene _pageScene;
     private VBoxContainer _pageContainer;
 
@@ -24,12 +26,12 @@ public partial class ScreenplayEdit : ScrollContainer
 
     public PageBlockScene AddPage(Dictionary data = null)
     {
-        var page = _pageScene.Instantiate<PageBlockScene>();
-        page.BlockResource = BlockFactory.Instance.AddBlockResource(Elements.Page.ToString(), data);
+        var page = (PageBlockScene)BlockFactory.Instance.AddBlockScene(Elements.Page, BlockScenes, data);
         
         _pageContainer.AddChild(page);
         
         page.SEdit = this;
+        page.Deserialize(data);
         page.SetPageNumber((_pageContainer.GetChildCount()) + ".");
         
         return page;

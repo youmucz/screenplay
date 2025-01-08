@@ -33,7 +33,7 @@ public partial class BlockResource : Resource
     public BlockResource(Dictionary data)
     {
         Deserialize(data);
-    
+        
         // 加载用作序列化的meta数据
         _metaPropertyInfo = new List<PropertyInfo>();
         _metaPropertyInfo = GetType().GetProperties()

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using Godot.Collections;
+using Screenplay.Factory;
 using Screenplay.Resources;
 
 namespace Screenplay.Blocks;
@@ -29,7 +30,7 @@ public partial class BlockScene : MarginContainer
         set { _parent = value; BlockResource.BlockParent = value.Uid.ToString(); }
     }
     
-    public PageBlockScene PageBlockScene;
+    public PageBlockScene Page;
     public BlockResource BlockResource { get; set; } = new ();
     public Array<BlockScene> ChildrenBlocks = new ();
     
@@ -191,5 +192,22 @@ public partial class BlockScene : MarginContainer
         if (data == null) return;
         
         BlockResource.Deserialize(data);
+
+        foreach (var kv in BlockResource.Children)
+        {
+            if (kv.Value.TryGetValue("BlockType", out var blockType))
+            {
+                var element = (Elements)Enum.Parse(typeof(Elements), blockType.ToString());
+
+                if (this is PageBlockScene page)
+                {
+                    page.AddBlock(element, this, kv.Value);
+                }
+                else
+                {
+                    Page.AddBlock(element, this, kv.Value);
+                }
+            }
+        }
     }
 }
