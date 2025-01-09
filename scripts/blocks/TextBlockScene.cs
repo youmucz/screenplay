@@ -73,4 +73,14 @@ public partial class TextBlockScene : BlockScene
     {
         return _textEdit.GetText();
     }
+
+    public override void Deserialize(Dictionary data)
+    {
+        base.Deserialize(data);
+        
+        if (BlockResource.Properties.TryGetValue("text", out var text))
+        {
+            _textEdit.Text = text;
+        }
+    }
 }

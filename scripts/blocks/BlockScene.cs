@@ -169,7 +169,7 @@ public partial class BlockScene : MarginContainer
     /// 序列化meta数据,用来存储到resource本地文件上
     /// </summary>
     /// <returns></returns>
-    public Dictionary Serialize()
+    public virtual Dictionary Serialize()
     {
         BlockResource.Children.Clear();
  
@@ -187,8 +187,8 @@ public partial class BlockScene : MarginContainer
     /// 反序列化数据
     /// </summary>
     /// <param name="data"></param>
-    public void Deserialize(Dictionary data)
-    {
+    public virtual void Deserialize(Dictionary data)
+    { 
         if (data == null) return;
         
         BlockResource.Deserialize(data);
@@ -199,14 +199,17 @@ public partial class BlockScene : MarginContainer
             {
                 var element = (Elements)Enum.Parse(typeof(Elements), blockType.ToString());
 
+                BlockScene block = null;
                 if (this is PageBlockScene page)
                 {
-                    page.AddBlock(element, this, kv.Value);
+                    block = page.AddBlock(element, this, kv.Value);
                 }
                 else
                 {
-                    Page.AddBlock(element, this, kv.Value);
+                    block = Page.AddBlock(element, this, kv.Value);
                 }
+
+                block?.Deserialize(kv.Value);
             }
         }
     }

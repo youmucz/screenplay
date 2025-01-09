@@ -262,13 +262,13 @@ public partial class PageBlockScene : BlockScene
     /// <summary>
     /// 添加块
     /// </summary>
-    public void AddBlock(Elements blockType=Elements.Text, BlockScene parent = null, Dictionary data=null)
+    public BlockScene AddBlock(Elements blockType=Elements.Text, BlockScene parent = null, Dictionary data=null)
     {
         // 固定每页的长度
         if (_blockContainer.GetChildCount() >= MaxBlocks)
         {
             SEdit.AddPage();
-            return;
+            return null;
         }
 
         var currentBlockScene = GrabBlock;
@@ -287,6 +287,8 @@ public partial class PageBlockScene : BlockScene
         
         GrabBlock = newBlock;
         CheckBeginEdit();
+        
+        return newBlock;
     }
     
     /// <summary>
