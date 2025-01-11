@@ -3,6 +3,7 @@ using Godot.Collections;
 using Screenplay.Blocks;
 using Screenplay.File;
 using Screenplay.Resources;
+using Screenplay.Windows.Templates;
 
 namespace Screenplay.Windows;
 
@@ -18,13 +19,13 @@ public partial class MainWindow : Control
     private FileDialog _saveDialog;
     private FileDialog _openDialog;
     private FileManager _fileManager;
-    
+    private TemplateWindow _tempWindow;
+
     public override void _Ready()
     {
         InitMenu();
         InitParam();
         InitEvent();
-        _workspace = GetNode<Workspace>("Main/Workspace");
     }
     
     /// <summary>
@@ -35,11 +36,12 @@ public partial class MainWindow : Control
 		_fileManager = GetNode<FileManager>("FileManager");
 		_workspace   = GetNode<Workspace>("Main/Workspace");
 		_version     = GetNode<Label>("Main/Status/Version");
-		_fileMenu    = GetNode<MenuButton>("Main/Menus/FileMenu");
-		_debugMenu   = GetNode<MenuButton>("Main/Menus/DebugMenu");
+		_fileMenu    = GetNode<MenuButton>("Main/Menus/FileMenuButton");
+		_debugMenu   = GetNode<MenuButton>("Main/Menus/DebugMenuButton");
 		_newDialog   = GetNode<FileDialog>("FileManager/NewFileDialog");
 		_saveDialog  = GetNode<FileDialog>("FileManager/SaveFileDialog");
 		_openDialog  = GetNode<FileDialog>("FileManager/OpenFileDialog");
+		_tempWindow  = GetNode<TemplateWindow>("FileManager/TemplateWindow");
 	}
 
 	/// <summary>
@@ -65,18 +67,6 @@ public partial class MainWindow : Control
 		
 		_fileManager.Workspace.EventTabSelected += WorkspaceOnEventTabSelected;
 		_fileManager.Workspace.EventTabClosed += WorkspaceOnEventTabClosed;
-
-		// 注册快捷键
-		var shortcut = new Shortcut();
-		var saveEvent = new InputEventKey()
-		{
-			CtrlPressed = true, // 按下Ctrl键
-			ShiftPressed = false, // 未按下Shift键
-			AltPressed = false, // 未按下Alt键
-			Keycode = Key.S, // 按下S键
-		};
-		shortcut.Events.Add(saveEvent);
-		_fileMenu.GetPopup().SetItemShortcut(2, shortcut);
 	}
 
 	/// <summary>
@@ -91,12 +81,15 @@ public partial class MainWindow : Control
 				_newDialog.PopupCentered();
 				break;
 			case 1:
-				_openDialog.PopupCentered();
-				break;
-			case 2:
-				_fileManager.SaveFile();
+				_tempWindow.PopupCentered();
 				break;
 			case 3:
+				_openDialog.PopupCentered();
+				break;
+			case 4:
+				_fileManager.SaveFile();
+				break;
+			case 5:
 				_saveDialog.PopupCentered();
 				break;
 		}

@@ -43,7 +43,7 @@ _item2Texture = Dictionary[StringName, Texture2D]({
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
 size = Vector2i(116, 174)
-item_count = 6
+item_count = 8
 item_0/text = "Comment"
 item_0/icon = ExtResource("3_syxlv")
 item_0/id = 0
@@ -61,6 +61,10 @@ item_4/id = 4
 item_5/text = "Turn into"
 item_5/icon = ExtResource("6_vr0kb")
 item_5/id = 5
+item_6/text = "Turn into"
+item_6/id = 6
+item_7/text = "Turn into"
+item_7/id = 7
 
 [node name="ElementMenu" type="PopupMenu" parent="PopupMenu"]
 auto_translate_mode = 1

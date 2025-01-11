@@ -3,7 +3,7 @@ using System;
 using Godot.Collections;
 using Screenplay.Factory;
 using Screenplay.Windows;
-using Screenplay.Resources;
+using Screenplay.Utils;
 
 namespace Screenplay.Blocks;
 
@@ -45,7 +45,7 @@ public partial class PageBlockScene : BlockScene
     {
         base._Input(@event);
         
-        if (!IsInstanceValid(Plugin.GetMainWindow()) || !Plugin.GetMainWindow().IsVisible())
+        if (!Plugin.GetMainWindow().IsVisible())
             return;
         
         switch (@event)

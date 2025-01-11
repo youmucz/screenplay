@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
+using Screenplay.Utils;
 using Screenplay.Blocks;
 using Screenplay.Factory;
 

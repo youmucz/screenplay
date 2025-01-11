@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://3goyqtx767ro"]
+[gd_scene load_steps=10 format=3 uid="uid://3goyqtx767ro"]
 
 [ext_resource type="Script" uid="uid://sk2jjmqa6j0f" path="res://addons/screenplay/scripts/MainWindow.cs" id="1_aytf0"]
 [ext_resource type="Texture2D" uid="uid://c2j3cjvfh6djh" path="res://addons/screenplay/resources/icons/Files/file-plus.svg" id="2_3tggo"]
+[ext_resource type="Script" uid="uid://6gfu5nw325nr" path="res://addons/screenplay/scripts/window/MainWindowMenus.cs" id="2_nu8pq"]
 [ext_resource type="Texture2D" uid="uid://cnjllv1f2e63q" path="res://addons/screenplay/resources/icons/Files/file.svg" id="3_4ciac"]
 [ext_resource type="Script" uid="uid://bcpbpeqln62k7" path="res://addons/screenplay/scripts/window/Workspace.cs" id="3_6h6in"]
 [ext_resource type="Texture2D" uid="uid://c1hf1qpmeo18o" path="res://addons/screenplay/resources/icons/Editor/save.svg" id="4_0y4td"]
+[ext_resource type="Texture2D" uid="uid://crko6vcfb8kur" path="res://addons/screenplay/resources/icons/Medias/film.svg" id="4_nu8pq"]
 [ext_resource type="Script" uid="uid://cbcfuu1hs2akg" path="res://addons/screenplay/scripts/File/FileManager.cs" id="6_4ciac"]
+[ext_resource type="PackedScene" uid="uid://c5vcof4rod444" path="res://addons/screenplay/scenes/windows/template_window.tscn" id="9_c4gaa"]
 
 [node name="MainWindow" type="Control"]
 layout_mode = 3
@@ -28,33 +31,44 @@ grow_vertical = 2
 
 [node name="Menus" type="HBoxContainer" parent="Main"]
 layout_mode = 2
+script = ExtResource("2_nu8pq")
 
-[node name="FileMenu" type="MenuButton" parent="Main/Menus"]
+[node name="FileMenuButton" type="MenuButton" parent="Main/Menus"]
 layout_mode = 2
 text = "File"
-item_count = 4
+item_count = 8
 popup/item_0/text = "New"
 popup/item_0/icon = ExtResource("2_3tggo")
 popup/item_0/id = 0
-popup/item_1/text = "Open"
-popup/item_1/icon = ExtResource("3_4ciac")
+popup/item_1/text = "New From Template"
+popup/item_1/icon = ExtResource("4_nu8pq")
 popup/item_1/id = 1
-popup/item_2/text = "Save"
-popup/item_2/icon = ExtResource("4_0y4td")
 popup/item_2/id = 2
-popup/item_3/text = "Save As"
-popup/item_3/icon = ExtResource("4_0y4td")
+popup/item_2/separator = true
+popup/item_3/text = "Open"
+popup/item_3/icon = ExtResource("3_4ciac")
 popup/item_3/id = 3
+popup/item_4/text = "Save"
+popup/item_4/icon = ExtResource("4_0y4td")
+popup/item_4/id = 4
+popup/item_5/text = "Save As"
+popup/item_5/icon = ExtResource("4_0y4td")
+popup/item_5/id = 5
+popup/item_6/text = "Save As Template"
+popup/item_6/icon = ExtResource("4_nu8pq")
+popup/item_6/id = 6
+popup/item_7/id = 7
+popup/item_7/separator = true
 
-[node name="EditMenu" type="MenuButton" parent="Main/Menus"]
+[node name="EditMenuButton" type="MenuButton" parent="Main/Menus"]
 layout_mode = 2
 text = "Edit"
 
-[node name="DebugMenu" type="MenuButton" parent="Main/Menus"]
+[node name="DebugMenuButton" type="MenuButton" parent="Main/Menus"]
 layout_mode = 2
 text = "Debug"
 
-[node name="HelpMenu" type="MenuButton" parent="Main/Menus"]
+[node name="HelpMenuButton" type="MenuButton" parent="Main/Menus"]
 layout_mode = 2
 text = "Help"
 
@@ -117,3 +131,6 @@ filters = PackedStringArray("*.tres; Screenplay")
 auto_translate_mode = 1
 mode_overrides_title = false
 filters = PackedStringArray("*.tres; Screenplay")
+
+[node name="TemplateWindow" parent="FileManager" instance=ExtResource("9_c4gaa")]
+visible = false

@@ -20,6 +20,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="BlockMenu" parent="HBoxContainer" instance=ExtResource("1_ecg08")]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 
 [node name="TextEdit" type="TextEdit" parent="HBoxContainer"]

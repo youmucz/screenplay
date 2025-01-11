@@ -11,7 +11,7 @@ public partial class Plugin : EditorPlugin
     {
     	// Initialization of the plugin goes here.
     	_mainWindowInstance = _mainWindow.Instantiate<MainWindow>();
-    		
+	    
     	// Add the main panel to the editor's main viewport.
     	EditorInterface.Singleton.GetEditorMainScreen().AddChild(_mainWindowInstance);
     	// Hide the main panel. Very much required.

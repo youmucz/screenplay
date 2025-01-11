@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using Godot.Collections;
-using Screenplay.Factory;
+using Screenplay.Utils;
 using Screenplay.Resources;
 
 namespace Screenplay.Blocks;

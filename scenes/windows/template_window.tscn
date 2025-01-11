@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=3 uid="uid://c5vcof4rod444"]
+
+[ext_resource type="Script" uid="uid://bimtue0v0e4gp" path="res://addons/screenplay/scripts/window/TemplateWindow.cs" id="1_ps47m"]
+[ext_resource type="Texture2D" uid="uid://dhjpxp8ffk7l3" path="res://addons/screenplay/resources/icons/Folders/icons8-user-folder-48.svg" id="2_6i41a"]
+[ext_resource type="Texture2D" uid="uid://bctb57g6dxnu7" path="res://addons/screenplay/resources/icons/Folders/icons8-movies-folder-48.svg" id="3_7h4yv"]
+[ext_resource type="Texture2D" uid="uid://cc57k2lon67n5" path="res://addons/screenplay/resources/icons/Folders/icons8-documents-folder-48.svg" id="4_7h4yv"]
+[ext_resource type="Script" uid="uid://q3ohqir0soc1" path="res://addons/screenplay/scripts/window/TemplateTree.cs" id="5_7h4yv"]
+[ext_resource type="Texture2D" uid="uid://5803d5uhh1jk" path="res://addons/screenplay/resources/icons/Files/file-text.svg" id="6_p1liw"]
+
+[node name="TemplateWindow" type="PopupPanel"]
+title = "Templates"
+initial_position = 2
+size = Vector2i(700, 600)
+visible = true
+script = ExtResource("1_ps47m")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TopContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MyTemplates" type="Button" parent="VBoxContainer/TopContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "My Templates"
+icon = ExtResource("2_6i41a")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="Scripts" type="Button" parent="VBoxContainer/TopContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Scripts"
+icon = ExtResource("3_7h4yv")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="Documents" type="Button" parent="VBoxContainer/TopContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Document"
+icon = ExtResource("4_7h4yv")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MidContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Tree" type="Tree" parent="VBoxContainer/MidContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+hide_folding = true
+hide_root = true
+script = ExtResource("5_7h4yv")
+_scriptsTempThumb = {
+"Screenplay": ExtResource("6_p1liw")
+}
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MidContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BotContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Ok" type="Button" parent="VBoxContainer/BotContainer"]
+layout_mode = 2
+text = "Ok"
+
+[node name="Cancel" type="Button" parent="VBoxContainer/BotContainer"]
+layout_mode = 2
+text = "Cancel"
