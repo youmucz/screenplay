@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Godot.Collections;
 using Screenplay.Resources;
 
 namespace Screenplay.Windows;
@@ -69,14 +70,14 @@ public partial class Workspace : VBoxContainer
     /// 获取当前选项卡内的节点图编辑器
     /// </summary>
     /// <returns></returns>
-    public ScreenplayEdit GetCurrentEditor()
+    public Editor GetCurrentEditor()
     {
-        return (ScreenplayEdit)_tabContainer.GetCurrentTabControl();
+        return (Editor)_tabContainer.GetCurrentTabControl();
     }
 
-    public ScreenplayEdit GetTabEditor(int index)
+    public Editor GetTabEditor(int index)
     {
-        return (ScreenplayEdit)_tabContainer.GetTabControl(index);
+        return (Editor)_tabContainer.GetTabControl(index);
     }
 
     public int GetTabEditor(string filepath)
@@ -93,10 +94,12 @@ public partial class Workspace : VBoxContainer
     /// <summary>
     /// 新增节点图到工作区中
     /// </summary>
-    /// <param name="graphEdit"></param>
-    public void AddEditor(ScreenplayEdit graphEdit)
+    /// <param name="editor"></param>
+    /// <param name="data"></param>
+    public void AddEditor(Editor editor, ScreenplayResource data)
     {
-        _tabContainer.AddChild(graphEdit);
-        _tabBar.AddTab(graphEdit.Name);
+        _tabContainer.AddChild(editor);
+        editor.LoadData(data);
+        _tabBar.AddTab(editor.MScreenplayResource.Filename);
     }
 }

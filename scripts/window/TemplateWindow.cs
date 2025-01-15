@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using Screenplay.Utils;
+
 namespace Screenplay.Windows.Templates;
 
 
@@ -14,6 +16,9 @@ public partial class TemplateWindow : PopupPanel
 	
 	private Button _okButton;
 	private Button _cancelButton;
+	
+	/// <summary> Emitted when a template item selected, return temp type.</summary>
+	public event Action<Elements> EventTemplateItemSelected = delegate { };
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -37,10 +42,12 @@ public partial class TemplateWindow : PopupPanel
 	}
 	
 	/// <summary>
-	/// Emitted when an item is double-clicked, or selected with a ui_accept input event (e. g. using Enter or Space on the keyboard). 
+	/// Emitted when an item is double-clicked, or selected with a ui_accept input event (e.g. using Enter or Space on the keyboard). 
 	/// </summary>
 	private void TemplateTreeOnItemActivated()
 	{
+		var item = _templateTree.GetSelected();
+		EventTemplateItemSelected?.Invoke((Elements)Enum.Parse(typeof(Elements), item.GetText(0)));
 		Hide();
 	}
 	

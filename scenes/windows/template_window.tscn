@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c5vcof4rod444"]
+[gd_scene load_steps=8 format=3 uid="uid://c5vcof4rod444"]
 
 [ext_resource type="Script" uid="uid://bimtue0v0e4gp" path="res://addons/screenplay/scripts/window/TemplateWindow.cs" id="1_ps47m"]
 [ext_resource type="Texture2D" uid="uid://dhjpxp8ffk7l3" path="res://addons/screenplay/resources/icons/Folders/icons8-user-folder-48.svg" id="2_6i41a"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cc57k2lon67n5" path="res://addons/screenplay/resources/icons/Folders/icons8-documents-folder-48.svg" id="4_7h4yv"]
 [ext_resource type="Script" uid="uid://q3ohqir0soc1" path="res://addons/screenplay/scripts/window/TemplateTree.cs" id="5_7h4yv"]
 [ext_resource type="Texture2D" uid="uid://5803d5uhh1jk" path="res://addons/screenplay/resources/icons/Files/file-text.svg" id="6_p1liw"]
+[ext_resource type="Texture2D" uid="uid://c1pxwcshyx57r" path="res://addons/screenplay/resources/icons/Files/icons8-document-16.svg" id="7_gtktr"]
 
 [node name="TemplateWindow" type="PopupPanel"]
 title = "Templates"
@@ -69,9 +70,12 @@ size_flags_horizontal = 3
 hide_folding = true
 hide_root = true
 script = ExtResource("5_7h4yv")
-_scriptsTempThumb = {
+_scriptsTempThumb = Dictionary[String, Texture2D]({
 "Screenplay": ExtResource("6_p1liw")
-}
+})
+_documentTempThumb = Dictionary[String, Texture2D]({
+"Document": ExtResource("7_gtktr")
+})
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/MidContainer"]
 layout_mode = 2

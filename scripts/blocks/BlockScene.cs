@@ -20,14 +20,14 @@ public partial class BlockScene : MarginContainer
 {
     public Guid Uid
     {
-        get => Guid.Parse(BlockResource.BlockGuid);
+        get => Guid.Parse(BlockResource.BlockGuid); 
         set => BlockResource.BlockGuid = value.ToString();
     }
 
     public BlockScene Parent
     {
         get => _parent;
-        set { _parent = value; BlockResource.BlockParent = value.Uid.ToString(); }
+        set { _parent = value; BlockResource.BlockParent = value?.Uid.ToString(); }
     }
     
     public PageBlockScene Page;

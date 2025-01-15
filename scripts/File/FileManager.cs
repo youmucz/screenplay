@@ -3,6 +3,7 @@ using System;
 using Godot.Collections;
 using Screenplay.Windows;
 using Screenplay.Resources;
+using Screenplay.Utils;
 using Array = Godot.Collections.Array;
 
 namespace Screenplay.File;
@@ -14,12 +15,12 @@ public partial class FileManager : Control
 	public Workspace Workspace;
     public MainWindow MainWindow;
 	
-	private PackedScene _screenplayEdit;
+	private PackedScene _editor;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_screenplayEdit = GD.Load<PackedScene>("res://addons/screenplay/scenes/windows/screenplay_edit.tscn");
+		_editor = GD.Load<PackedScene>("res://addons/screenplay/scenes/windows/editor.tscn");
 	}
 	
 	public void NewFile(string dir, string filename, string filepath)
@@ -33,6 +34,27 @@ public partial class FileManager : Control
 		else
 		{
 			CreateFile(dir, filename, filepath);
+		}
+	}
+	
+	/// <summary>
+	/// Create a doc from template.
+	/// </summary>
+	/// <param name="dir"></param>
+	/// <param name="filename"></param>
+	/// <param name="filepath"></param>
+	/// <param name="elements"></param>
+	public void NewFileFromTemplate(string dir, string filename, string filepath, Elements? elements)
+	{
+		var tabIndex = Workspace.GetTabEditor(filepath);
+		
+		if (tabIndex >= 0)
+		{
+			Workspace.SetCurrentTab(tabIndex);
+		}
+		else
+		{
+			CreateFile(dir, filename, filepath, elements);
 		}
 	}
 
@@ -54,9 +76,8 @@ public partial class FileManager : Control
 			data.Filename = filename;
 			data.Filepath = filepath;
 			
-			var editor = _screenplayEdit.Instantiate<ScreenplayEdit>();
-			Workspace.AddEditor(editor);
-			editor.LoadData(data);
+			var editor = _editor.Instantiate<Editor>();
+			Workspace.AddEditor(editor, data);
 		}
 		
 		GD.Print("打开文件:", filename);
@@ -68,40 +89,32 @@ public partial class FileManager : Control
 	/// <param name="dir"></param>
 	/// <param name="filename"></param>
 	/// <param name="filepath"></param>
-	public void CreateFile(string dir, string filename, string filepath)
+	/// <param name="elements"></param>
+	public void CreateFile(string dir, string filename, string filepath, Elements? elements=Elements.Document)
 	{
-		var editor = _screenplayEdit.Instantiate<ScreenplayEdit>();
-		
-		// var pageData = new Array<Dictionary>(){
-		// 	new()
-		// 	{
-		// 		{"BlockGuid", Guid.NewGuid().ToString()}, 
-		// 		{"BlockType", Elements.Page.ToString()}, 
-		// 		{"BlockParent", ""},
-		// 		{"Content", new Array()},
-		// 		{"Properties", new Dictionary()},
-		// 	}
-		// };
+		var editor = _editor.Instantiate<Editor>();
 	
 		var data = new ScreenplayResource()
 		{
 			FileDir = dir,
 			Filename = filename,
 			Filepath = filepath,
-			// PageData = pageData,
+			Data = new Dictionary()
+			{
+				{"BlockType", elements.ToString()}
+			}
 		};
 		
-		Workspace.AddEditor(editor);
-		editor.LoadData(data);
+		Workspace.AddEditor(editor, data);
 		var error = ResourceSaver.Save(data, filepath);
 		
 		if (error == Error.Ok)
 		{
-			GD.Print("New Dialogue create successfully!");
+			GD.Print($"New {elements.ToString()} file create successfully!");
 		}
 		else
 		{
-			GD.Print("New Dialogue create failed. Error: " + error + " path:" + filepath);
+			GD.Print($"New {elements.ToString()} file create failed. Error: " + error + " path:" + filepath);
 		}
 	}
 
@@ -115,11 +128,11 @@ public partial class FileManager : Control
 		var error = ResourceSaver.Save(data, data.Filepath);
 		if (error == Error.Ok)
 		{
-			GD.Print("Dialogue Resource saved successfully!");
+			GD.Print($"{data.Filename} File Resource saved successfully!");
 		}
 		else
 		{
-			GD.Print("Failed to save dialogue resource. Error: " + error);
+			GD.Print($"Failed to save {data.Filename} file resource. Error: "+ error);
 		}
 	}
 
@@ -129,15 +142,16 @@ public partial class FileManager : Control
 		if (tabIndex >= 0)
 		{
 			var editor = Workspace.GetTabEditor(tabIndex);
-			var error = ResourceSaver.Save(editor.DumpsData(), filepath);
+			var data = editor.DumpsData();
+			var error = ResourceSaver.Save(data, filepath);
 			
 			if (error == Error.Ok)
 			{
-				GD.Print("Dialogue Resource saved successfully!");
+				GD.Print($"{data.Filename} File Resource saved successfully!");
 			}
 			else
 			{
-				GD.Print("Failed to save dialogue resource. Error: "+ error);
+				GD.Print($"Failed to save {data.Filename} file resource. Error: "+ error);
 			}
 		}
 	}

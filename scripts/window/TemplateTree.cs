@@ -13,7 +13,7 @@ public partial class TemplateTree : Tree
 	
 	[Export] private Dictionary<string, Texture2D> _scriptsTempThumb = new ();
 	[Export] private Dictionary<string, Texture2D> _documentTempThumb = new ();
-	[Export] private Dictionary<string, Texture2D> _templatesTempThumb = new ();
+	[Export] private Dictionary<string, Texture2D> _myTemplatesTempThumb = new ();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -41,10 +41,28 @@ public partial class TemplateTree : Tree
 	public void AddDocuments()
 	{
 		Clear();
+		
+		_root = CreateItem();
+		
+		foreach (var name in _documentTempThumb.Keys)
+		{
+			var item = _root.CreateChild();
+			item.SetText(0, name);
+			item.SetIcon(0, _fileThumbnail);
+		}
 	}
 
 	public void AddTemplates()
 	{
 		Clear();
+		
+		_root = CreateItem();
+		
+		foreach (var name in _myTemplatesTempThumb.Keys)
+		{
+			var item = _root.CreateChild();
+			item.SetText(0, name);
+			item.SetIcon(0, _fileThumbnail);
+		}
 	}
 }

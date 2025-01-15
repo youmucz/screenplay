@@ -3,6 +3,7 @@ using Godot.Collections;
 using Screenplay.Blocks;
 using Screenplay.File;
 using Screenplay.Resources;
+using Screenplay.Utils;
 using Screenplay.Windows.Templates;
 
 namespace Screenplay.Windows;
@@ -20,6 +21,8 @@ public partial class MainWindow : Control
     private FileDialog _openDialog;
     private FileManager _fileManager;
     private TemplateWindow _tempWindow;
+    
+    private Elements? _elements;
 
     public override void _Ready()
     {
@@ -67,6 +70,13 @@ public partial class MainWindow : Control
 		
 		_fileManager.Workspace.EventTabSelected += WorkspaceOnEventTabSelected;
 		_fileManager.Workspace.EventTabClosed += WorkspaceOnEventTabClosed;
+		
+		_tempWindow.EventTemplateItemSelected += TempWindowOnEventTemplateItemSelected;
+	}
+
+	public void PopupTemplateWindow()
+	{
+		_tempWindow.PopupCentered();
 	}
 
 	/// <summary>
@@ -97,7 +107,16 @@ public partial class MainWindow : Control
 
 	private void OnNewFile(string filepath)
 	{
-		_fileManager.NewFile(_newDialog.CurrentDir, _newDialog.CurrentFile, filepath);
+		if (_elements != null)
+		{
+			_fileManager.NewFileFromTemplate(_newDialog.CurrentDir, _newDialog.CurrentFile, filepath, _elements);
+		}
+		else
+		{
+			_fileManager.NewFile(_newDialog.CurrentDir, _newDialog.CurrentFile, filepath);
+		}
+		
+		_elements = null;
 	}
 
 	private void OnOpenFile(string filepath)
@@ -108,6 +127,12 @@ public partial class MainWindow : Control
 	private void OnSaveAsFile(string filepath)
 	{
 		_fileManager.SaveFile(filepath);
+	}
+	
+	private void TempWindowOnEventTemplateItemSelected(Elements element)
+	{
+		_elements = element;
+		_newDialog.PopupCentered();
 	}
 	
 	private void WorkspaceOnEventTabClosed(ScreenplayResource resource)

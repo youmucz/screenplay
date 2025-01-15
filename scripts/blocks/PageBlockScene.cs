@@ -11,7 +11,8 @@ namespace Screenplay.Blocks;
 [Tool, BlockType(Elements.Page)]
 public partial class PageBlockScene : BlockScene
 {
-    public ScreenplayEdit SEdit;
+    public Editor SEditor;
+    public bool HasEmpty => _blockContainer.GetChildCount() == 0;
     
     /// <summary> current focus block. </summary>
     public BlockScene GrabBlock
@@ -22,25 +23,19 @@ public partial class PageBlockScene : BlockScene
     /// <summary> current focus block. </summary>
     private BlockScene _grabBlock;
     
-    private const int MaxBlocks = 20;
-
     private Label _pageNumber;
     private VBoxContainer _vboxContainer;
     private VBoxContainer _blockContainer;
-    private VBoxContainer _emptyContainer;
     
     public override void _Ready()
     {
         base._Ready();
         
         _vboxContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer");
-        _emptyContainer = GetNode<VBoxContainer>("BlockMarginContainer/EmptyContainer");
         _blockContainer = GetNode<VBoxContainer>("BlockMarginContainer/VBoxContainer/BlockContainer");
         _pageNumber = GetNode<Label>("BlockMarginContainer/VBoxContainer/PageNumber");
-
-        _pageNumber.Text = "1.";
     }
-    
+
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
@@ -80,19 +75,7 @@ public partial class PageBlockScene : BlockScene
 
                 break;
             }
-            // 鼠标双击创建新block
-            case InputEventMouseButton mouseEvent:
-            {
-                if (mouseEvent.DoubleClick && mouseEvent.ButtonIndex == MouseButton.Left)
-                {
-                    if (!CheckBeginEdit()) AddBlock();
-                }
-
-                break;
-            }
         }
-        
-        // CheckBeginEdit();
     }
 
     public void SetPageNumber(string pageNumber)
@@ -110,19 +93,6 @@ public partial class PageBlockScene : BlockScene
         }
         
         return null;
-    }
-    
-    /// <summary>
-    /// 空白页面提示面板显隐逻辑
-    /// </summary>
-    private bool CheckBeginEdit()
-    {
-        var visible = IsInstanceValid(GrabBlock);
-        
-        _vboxContainer.Visible = visible;
-        _emptyContainer.Visible = !visible;
-        
-        return visible;
     }
 
     /// <summary>
@@ -213,7 +183,7 @@ public partial class PageBlockScene : BlockScene
     public void TurnInto(int index, BlockScene block)
     {
         var blockType = (Elements)index;
-        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, SEdit.BlockScenes);
+        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, SEditor.BlockScenes);
         
         if (newBlock != null)
         {
@@ -262,20 +232,13 @@ public partial class PageBlockScene : BlockScene
     /// <summary>
     /// 添加块
     /// </summary>
-    public BlockScene AddBlock(Elements blockType=Elements.Text, BlockScene parent = null, Dictionary data=null)
+    public BlockScene AddBlock(Elements blockType=Elements.Text, BlockScene parent=null, Dictionary data=null)
     {
-        // 固定每页的长度
-        if (_blockContainer.GetChildCount() >= MaxBlocks)
-        {
-            SEdit.AddPage();
-            return null;
-        }
-
         var currentBlockScene = GrabBlock;
         parent ??= currentBlockScene?.Parent ?? this;
         
         var toIndex = IsInstanceValid(currentBlockScene) ? currentBlockScene.GetIndex() + 1 : 0;
-        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, SEdit.BlockScenes, data);
+        var newBlock = BlockFactory.Instance.AddBlockScene(blockType, SEditor.BlockScenes, data);
         newBlock.IndentParent(parent, parent != this);
         newBlock.Page = this;
         
@@ -286,8 +249,6 @@ public partial class PageBlockScene : BlockScene
         _blockContainer.MoveChild(newBlock, toIndex);
         
         GrabBlock = newBlock;
-        CheckBeginEdit();
-        
         return newBlock;
     }
     
@@ -302,11 +263,6 @@ public partial class PageBlockScene : BlockScene
         // if index < 0 means that all block already been deleted.
         nextBlock?.Destroy(currentBlockScene);
         GrabBlock = nextBlock;
-
-        if (!CheckBeginEdit())
-        {
-            SEdit.CallDeferred("DelPage", this);
-        }
     }
     
     /// <summary>

@@ -7,6 +7,10 @@ public enum Elements
 {
     Text,
     Page,
+    Document,
+    
+    // screenplay
+    Screenplay,
     Scene,
     Action,
     Option,
