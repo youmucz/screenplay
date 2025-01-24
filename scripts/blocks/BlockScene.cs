@@ -137,7 +137,7 @@ public partial class BlockScene : MarginContainer
     /// <summary>
     /// 删除block后要做的事
     /// </summary>
-    /// <param name="block"></param>
+    /// <param name="block">  </param>
     public virtual void Destroy(BlockScene block)
     {
         

@@ -9,8 +9,8 @@ namespace Screenplay.Windows;
 [Tool]
 public partial class Workspace : VBoxContainer
 {
-    public event Action<ScreenplayResource> EventTabClosed = delegate { };
-    public event Action<ScreenplayResource> EventTabSelected = delegate { };
+    public event Action<EditorResource> EventTabClosed = delegate { };
+    public event Action<EditorResource> EventTabSelected = delegate { };
 	
     private TabBar _tabBar;
     private TabContainer _tabContainer;
@@ -31,7 +31,7 @@ public partial class Workspace : VBoxContainer
     /// <param name="tab"></param>
     private void OnTabClosePressed(long tab)
     {
-        EventTabClosed?.Invoke(GetTabEditor((int)tab).MScreenplayResource);
+        EventTabClosed?.Invoke(GetTabEditor((int)tab).MEditorResource);
         _tabBar.RemoveTab((int)tab);
         _tabContainer.RemoveChild(GetTabEditor((int)tab));
     }
@@ -43,7 +43,7 @@ public partial class Workspace : VBoxContainer
     private void OnTabSelected(long tab)
     {
         _tabContainer.CurrentTab = (int)tab;
-        EventTabSelected?.Invoke(GetCurrentEditor().MScreenplayResource);
+        EventTabSelected?.Invoke(GetCurrentEditor().MEditorResource);
     }
 	
     /// <summary>
@@ -54,7 +54,7 @@ public partial class Workspace : VBoxContainer
     {
         _tabBar.CurrentTab = index;
         _tabContainer.CurrentTab = index;
-        EventTabSelected?.Invoke(GetTabEditor(index).MScreenplayResource);
+        EventTabSelected?.Invoke(GetTabEditor(index).MEditorResource);
     }
 	
     /// <summary>
@@ -85,7 +85,7 @@ public partial class Workspace : VBoxContainer
         for (var i = 0; i < _tabContainer.GetTabCount(); i++)
         {
             var editor = GetTabEditor(i);
-            if (filepath == editor.MScreenplayResource.Filepath) return i;
+            if (filepath == editor.MEditorResource.Filepath) return i;
         }
 
         return -1;
@@ -96,10 +96,10 @@ public partial class Workspace : VBoxContainer
     /// </summary>
     /// <param name="editor"></param>
     /// <param name="data"></param>
-    public void AddEditor(Editor editor, ScreenplayResource data)
+    public void AddEditor(Editor editor, EditorResource data)
     {
         _tabContainer.AddChild(editor);
         editor.LoadData(data);
-        _tabBar.AddTab(editor.MScreenplayResource.Filename);
+        _tabBar.AddTab(editor.MEditorResource.Filename);
     }
 }

@@ -1,12 +1,11 @@
-using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 using Screenplay.Utils;
 
 namespace Screenplay.Blocks;
 
-[Tool, BlockType(Elements.Text)]
-public partial class TextBlockScene : BlockScene
+[Tool, BlockType(Elements.Action)]
+public partial class ActionBlockScene : BlockScene
 {
     private TextEdit _textEdit;
     
@@ -19,20 +18,10 @@ public partial class TextBlockScene : BlockScene
         _textEdit.FocusExited += TextEditOnFocusExited;
         _textEdit.TextChanged += TextEditOnTextChanged;
     }
-    
-    /// <summary>
-    /// Update new text to resource.
-    /// </summary>
+
     private void TextEditOnTextChanged()
     {
-        if (BlockResource.Properties.TryGetValue("text", out var text))
-        {
-            BlockResource.Properties["text"] = _textEdit.Text;
-        }
-        else
-        {
-            BlockResource.Properties.TryAdd("text", _textEdit.Text);
-        }
+        BlockResource.Properties.Add("text", _textEdit.Text);
     }
 
     private void TextEditOnFocusEntered()
@@ -50,7 +39,6 @@ public partial class TextBlockScene : BlockScene
     public override void SetFocus()
     {
         base.SetFocus();
-        _textEdit.SetCaretColumn(_textEdit.Text.Length);
         _textEdit.GrabFocus();
     }
 
@@ -65,15 +53,11 @@ public partial class TextBlockScene : BlockScene
         return _textEdit.GetCaretColumn() == 0;
     }
     
-    /// <summary>
-    /// This block will be destroyed, do something.
-    /// </summary>
-    /// <param name="toGrabBlock"> Will to grab after this block be destroyed. </param>
-    public override void Destroy(BlockScene toGrabBlock)
+    public override void Destroy(BlockScene block)
     {
-        if (toGrabBlock is TextBlockScene textBlockScene)
+        if (block is TextBlockScene textBlockScene)
         {
-            textBlockScene.SetText(GetRelicText());
+            SetText(textBlockScene.GetRelicText());
         }
     }
     

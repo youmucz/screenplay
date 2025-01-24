@@ -2,7 +2,7 @@ using Godot;
 using Screenplay.Windows;
 
 [Tool]
-public partial class Plugin : EditorPlugin
+public partial class ScreenplayPlugin : EditorPlugin
 {
     private static MainWindow _mainWindowInstance;
     private PackedScene _mainWindow = ResourceLoader.Load<PackedScene>("res://addons/screenplay/scenes/main_window.tscn");

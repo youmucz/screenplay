@@ -13,7 +13,7 @@ namespace Screenplay.Windows;
 public partial class Editor : ScrollContainer
 {
     public MainWindow MainWindow;
-    public ScreenplayResource MScreenplayResource;
+    public EditorResource MEditorResource;
     
     [Export] public Dictionary<Elements, PackedScene> BlockScenes;
     
@@ -72,18 +72,18 @@ public partial class Editor : ScrollContainer
     }
     
     /// <summary>
-    /// Load deserialized <see cref="ScreenplayResource" /> from local tres file, and rebuild graph.
+    /// Load deserialized <see cref="EditorResource" /> from local tres file, and rebuild graph.
     /// </summary>
     /// <param name="resource"></param>
-    public void LoadData(ScreenplayResource resource)
+    public void LoadData(EditorResource resource)
     {
-        MScreenplayResource = resource;
+        MEditorResource = resource;
 
         Name = resource.Filename?.Split(".")[0];
 
-        if (MScreenplayResource.Data.TryGetValue("BlockType", out var blockType))
+        if (MEditorResource.Data.TryGetValue("BlockType", out var blockType))
         {
-            AddPage((Elements)Enum.Parse(typeof(Elements), blockType.ToString()), MScreenplayResource.Data);
+            AddPage((Elements)Enum.Parse(typeof(Elements), blockType.ToString()), MEditorResource.Data);
         }
         
         ShowTemplateContainer();
@@ -92,12 +92,12 @@ public partial class Editor : ScrollContainer
     /// <summary>
     /// Return serialized node-graph data, include graph global param.
     /// </summary>
-    /// <returns><see cref="ScreenplayResource" /></returns>
-    public ScreenplayResource DumpsData()
+    /// <returns><see cref="EditorResource" /></returns>
+    public EditorResource DumpsData()
     {
-        MScreenplayResource.Data = _page.Serialize();
+        MEditorResource.Data = _page.Serialize();
         
-        return MScreenplayResource;
+        return MEditorResource;
     }
        
     /// <summary>
@@ -105,7 +105,7 @@ public partial class Editor : ScrollContainer
     /// </summary>
     private void AddTemplateButtonOnPressed()
     {
-        Plugin.GetMainWindow().PopupTemplateWindow();
+        ScreenplayPlugin.GetMainWindow().PopupTemplateWindow();
     }
     
     /// <summary>

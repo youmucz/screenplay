@@ -40,7 +40,7 @@ public partial class PageBlockScene : BlockScene
     {
         base._Input(@event);
         
-        if (!Plugin.GetMainWindow().IsVisible())
+        if (IsInstanceValid(ScreenplayPlugin.GetMainWindow()) && !ScreenplayPlugin.GetMainWindow().IsVisible())
             return;
         
         switch (@event)
@@ -255,14 +255,16 @@ public partial class PageBlockScene : BlockScene
     /// <summary>
     /// 删除块,删掉的块进入undo堆栈中
     /// </summary>
-    private void DelBlock(BlockScene currentBlockScene, BlockScene nextBlock)
+    /// <param name="toDelBlock"> 将被删除的区块 </param>
+    /// <param name="toGrabBlock">  </param>
+    private void DelBlock(BlockScene toDelBlock, BlockScene toGrabBlock)
     {
-        _blockContainer.RemoveChild(currentBlockScene);
+        _blockContainer.RemoveChild(toDelBlock);
         // TODO: input del block into undo stack. 
             
         // if index < 0 means that all block already been deleted.
-        nextBlock?.Destroy(currentBlockScene);
-        GrabBlock = nextBlock;
+        toDelBlock?.Destroy(toGrabBlock);
+        GrabBlock = toGrabBlock;
     }
     
     /// <summary>

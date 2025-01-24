@@ -135,12 +135,12 @@ public partial class MainWindow : Control
 		_newDialog.PopupCentered();
 	}
 	
-	private void WorkspaceOnEventTabClosed(ScreenplayResource resource)
+	private void WorkspaceOnEventTabClosed(EditorResource resource)
 	{
 		
 	}
 
-	private void WorkspaceOnEventTabSelected(ScreenplayResource resource)
+	private void WorkspaceOnEventTabSelected(EditorResource resource)
 	{
 		
 	}

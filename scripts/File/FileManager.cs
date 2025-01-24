@@ -71,7 +71,7 @@ public partial class FileManager : Control
 		}
 		else
 		{
-			var data = ResourceLoader.Load<ScreenplayResource>(filepath, "", ResourceLoader.CacheMode.Replace);
+			var data = ResourceLoader.Load<EditorResource>(filepath, "", ResourceLoader.CacheMode.Replace);
 			data.FileDir = dir;
 			data.Filename = filename;
 			data.Filepath = filepath;
@@ -94,7 +94,7 @@ public partial class FileManager : Control
 	{
 		var editor = _editor.Instantiate<Editor>();
 	
-		var data = new ScreenplayResource()
+		var data = new EditorResource()
 		{
 			FileDir = dir,
 			Filename = filename,

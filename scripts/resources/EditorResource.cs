@@ -1,13 +1,11 @@
-using System;
 using Godot;
 using Godot.Collections;
-using Screenplay.Utils;
 
 namespace Screenplay.Resources;
 
 
 [Tool]
-public partial class ScreenplayResource : Resource
+public partial class EditorResource : Resource
 {
     [Export] public string FileDir;
     [Export] public string Filename;

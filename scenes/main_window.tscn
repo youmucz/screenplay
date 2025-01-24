@@ -75,9 +75,33 @@ text = "Help"
 [node name="HSeparator" type="HSeparator" parent="Main"]
 layout_mode = 2
 
-[node name="Tools" type="HBoxContainer" parent="Main"]
+[node name="Toolbar" type="HBoxContainer" parent="Main"]
+layout_mode = 2
+
+[node name="Elements" type="HBoxContainer" parent="Main/Toolbar"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Scene" type="Button" parent="Main/Toolbar/Elements"]
+layout_mode = 2
+text = "Scene"
+
+[node name="Action" type="Button" parent="Main/Toolbar/Elements"]
+layout_mode = 2
+text = "Action"
+
+[node name="Dialogue" type="Button" parent="Main/Toolbar/Elements"]
+layout_mode = 2
+text = "Dialogue"
+
+[node name="Character" type="Button" parent="Main/Toolbar/Elements"]
+layout_mode = 2
+text = "Character"
+
+[node name="Transition" type="Button" parent="Main/Toolbar/Elements"]
+layout_mode = 2
+text = "Transition"
 
 [node name="HSeparator2" type="HSeparator" parent="Main"]
 layout_mode = 2
